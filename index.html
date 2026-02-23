@@ -13,11 +13,11 @@
         :root { --gold: #e5b869; --dark: #3a3a3a; --bg-color: #fffaf0; }
         body { margin: 0; background-color: var(--bg-color); display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-        /* --- 1. LỚP HOA ĐÀO TRÊN CÙNG (Z-INDEX CAO NHẤT) --- */
+        /* --- 1. LỚP HOA ĐÀO --- */
         .cherry-blossoms { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            pointer-events: none; /* Để vẫn click được vào các nút bên dưới */
-            z-index: 9999; /* Đảm bảo nằm trên mọi thứ */
+            pointer-events: none; 
+            z-index: 9999; 
         }
         .petal { position: absolute; background-color: #ffb7c5; border-radius: 15px 0 15px 15px; opacity: 0.8; animation: fall linear infinite; box-shadow: 0 0 8px rgba(255,183,197,0.5); }
         @keyframes fall {
@@ -67,8 +67,11 @@
         .title-main { font-family: 'Playfair Display', serif; font-size: 26px; border-bottom: 2px solid var(--gold); padding-bottom: 5px; margin-bottom: 20px; }
         .guest-name { font-weight: 700; color: #b38b4d; font-size: 18px; }
         .class-text { font-family: 'Great Vibes', cursive; font-size: 40px; color: var(--gold); margin: 10px 0; }
-        .date-box { display: flex; align-items: center; gap: 15px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 5px 20px; margin-bottom: 15px; }
-        .big-day { font-size: 40px; color: var(--gold); font-family: 'Playfair Display', serif; }
+        
+        /* Cải tiến phần Date Box để chứa thêm giờ */
+        .date-box { display: flex; align-items: center; gap: 12px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 8px 20px; margin-bottom: 15px; }
+        .big-day { font-size: 35px; color: var(--gold); font-family: 'Playfair Display', serif; }
+        .date-info-stack { display: flex; flex-direction: column; font-size: 11px; text-align: left; line-height: 1.2; font-weight: 600; }
         .location { font-size: 12px; font-weight: 700; }
     </style>
 </head>
@@ -80,6 +83,7 @@
         <div class="input-group"><label>Bạn thân</label><input type="text" id="in-name" placeholder="Tên người nhận..." oninput="sync()"></div>
         <div class="input-group"><label>Tên bạn</label><input type="text" id="in-owner" placeholder="Chủ thiệp..." oninput="sync()"></div>
         <div class="input-group"><label>Ngày lễ</label><input type="date" id="in-date" value="2026-03-01" oninput="sync()"></div>
+        <div class="input-group"><label>Giờ tập trung</label><input type="time" id="in-time" value="09:30" oninput="sync()"></div>
         <div class="input-group"><label>Lớp</label><input type="text" id="in-class" value="12A4" oninput="sync()"></div>
         <div class="input-group"><label>Địa điểm</label><input type="text" id="in-loc" value="Trường THPT TG2" oninput="sync()"></div>
         <button class="btn-save" onclick="saveImage()">LƯU THIỆP</button>
@@ -117,11 +121,19 @@
                     Đến dự buổi chụp kỉ yếu cùng tớ nhé!
                 </div>
                 <div class="class-text" id="out-class">Class of 12A4</div>
+                
                 <div class="date-box">
-                    <span id="out-month">THÁNG 03</span>
+                    <div class="date-info-stack">
+                        <span id="out-month">THÁNG 03</span>
+                        <span id="out-year">NĂM 2026</span>
+                    </div>
                     <span class="big-day" id="out-day">01</span>
-                    <span id="out-time">2026</span>
+                    <div class="date-info-stack">
+                        <span style="color:var(--gold)">VÀO LÚC</span>
+                        <span id="out-time-display" style="font-size: 16px;">09:30 AM</span>
+                    </div>
                 </div>
+
                 <div class="location" id="out-loc">Trường THPT TG2</div>
             </div>
         </div>
@@ -140,10 +152,21 @@
             container.appendChild(petal);
         }
 
+        function formatTime(timeStr) {
+            if(!timeStr) return "09:30 AM";
+            const [hours, minutes] = timeStr.split(':');
+            let h = parseInt(hours);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12; // 0 thành 12
+            return `${String(h).padStart(2, '0')}:${minutes} ${ampm}`;
+        }
+
         function sync() {
             const guest = document.getElementById('in-name').value;
             const owner = document.getElementById('in-owner').value;
             const dateVal = document.getElementById('in-date').value;
+            const timeVal = document.getElementById('in-time').value;
             const cls = document.getElementById('in-class').value;
             const loc = document.getElementById('in-loc').value;
 
@@ -151,12 +174,15 @@
             document.getElementById('out-owner').innerText = owner || "Your Name";
             document.getElementById('out-class').innerText = "Class of " + (cls || "12A4");
             document.getElementById('out-loc').innerText = loc;
+            
+            // Cập nhật giờ hiển thị
+            document.getElementById('out-time-display').innerText = formatTime(timeVal);
 
             if(dateVal) {
                 const d = new Date(dateVal);
                 document.getElementById('out-day').innerText = String(d.getDate()).padStart(2, '0');
                 document.getElementById('out-month').innerText = "THÁNG " + String(d.getMonth() + 1).padStart(2, '0');
-                document.getElementById('out-time').innerText = d.getFullYear();
+                document.getElementById('out-year').innerText = "NĂM " + d.getFullYear();
             }
         }
 
@@ -165,7 +191,6 @@
             const toast = document.getElementById('notification');
             panel.style.display = 'none';
 
-            // Khi chụp ảnh, hoa đào (z-index 9999) sẽ không bị dính vào ảnh vì nằm ngoài vùng #my-card
             html2canvas(document.getElementById('my-card'), { scale: 3, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'thiep-ki-yeu-ban-be.png';
@@ -177,6 +202,7 @@
                 setTimeout(() => { toast.style.display = 'none'; }, 6000);
             });
         }
+        // Gọi sync lần đầu để hiển thị giá trị mặc định
         sync();
     </script>
 </body>
