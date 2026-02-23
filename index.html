@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Kỉ Yếu - Hiệu Ứng Lớp Phủ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root { --gold: #e5b869; --dark: #3a3a3a; --bg-color: #fffaf0; }
+        body { margin: 0; background-color: var(--bg-color); display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+
+        /* --- 1. LỚP HOA ĐÀO TRÊN CÙNG (Z-INDEX CAO NHẤT) --- */
+        .cherry-blossoms { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            pointer-events: none; /* Để vẫn click được vào các nút bên dưới */
+            z-index: 9999; /* Đảm bảo nằm trên mọi thứ */
+        }
+        .petal { position: absolute; background-color: #ffb7c5; border-radius: 15px 0 15px 15px; opacity: 0.8; animation: fall linear infinite; box-shadow: 0 0 8px rgba(255,183,197,0.5); }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(110vh) translateX(150px) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- BẢNG ĐIỀU KHIỂN --- */
+        #control-panel {
+            background: white; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 100; display: flex; flex-wrap: wrap; gap: 10px; width: 100%;
+            justify-content: center; align-items: flex-end; position: sticky; top: 0;
+        }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group label { font-size: 10px; font-weight: 700; color: var(--gold); }
+        .input-group input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; }
+        
+        .btn-save { background: #d4a75a; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: 700; cursor: pointer; }
+
+        /* --- THÔNG BÁO --- */
+        #notification {
+            position: fixed; bottom: 20px; right: 20px; background: #333; color: white;
+            padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-left: 5px solid var(--gold);
+        }
+
+        /* --- THIẾT KẾ THIỆP --- */
+        #capture-area { padding: 60px 20px; z-index: 5; }
+        .invitation-card {
+            background-color: white; width: 850px; height: 550px; display: flex;
+            position: relative; padding: 40px; box-sizing: border-box;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .grad-cap-top {
+            position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
+            width: 120px; z-index: 10;
+        }
+
+        .left-side, .right-side { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .divider { width: 1px; background: #eee; height: 80%; margin: 0 20px; }
+
+        .text-thu-moi { font-family: 'Great Vibes', cursive; font-size: 70px; margin: 0; }
+        .text-ki-yeu { font-family: 'Playfair Display', serif; font-size: 55px; color: var(--gold); letter-spacing: 4px; margin: 0; }
+        .owner-name { font-family: 'Great Vibes', cursive; font-size: 35px; color: var(--dark); margin: 5px 0; }
+        .title-main { font-family: 'Playfair Display', serif; font-size: 26px; border-bottom: 2px solid var(--gold); padding-bottom: 5px; margin-bottom: 20px; }
+        .guest-name { font-weight: 700; color: #b38b4d; font-size: 18px; }
+        .class-text { font-family: 'Great Vibes', cursive; font-size: 40px; color: var(--gold); margin: 10px 0; }
+        .date-box { display: flex; align-items: center; gap: 15px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 5px 20px; margin-bottom: 15px; }
+        .big-day { font-size: 40px; color: var(--gold); font-family: 'Playfair Display', serif; }
+        .location { font-size: 12px; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <div class="cherry-blossoms" id="blossoms-container"></div>
+
+    <div id="control-panel">
+        <div class="input-group"><label>Bạn thân</label><input type="text" id="in-name" placeholder="Tên người nhận..." oninput="sync()"></div>
+        <div class="input-group"><label>Tên bạn</label><input type="text" id="in-owner" placeholder="Chủ thiệp..." oninput="sync()"></div>
+        <div class="input-group"><label>Ngày lễ</label><input type="date" id="in-date" value="2026-03-01" oninput="sync()"></div>
+        <div class="input-group"><label>Lớp</label><input type="text" id="in-class" value="12A4" oninput="sync()"></div>
+        <div class="input-group"><label>Địa điểm</label><input type="text" id="in-loc" value="Trường THPT TG2" oninput="sync()"></div>
+        <button class="btn-save" onclick="saveImage()">LƯU THIỆP</button>
+    </div>
+
+    <div id="notification">
+        <strong>✓ Đang tải xuống!</strong><br>
+        Mở phần <b>Tải xuống</b> của trình duyệt để xem thiệp nhé.
+    </div>
+
+    <div id="capture-area">
+        <div class="invitation-card" id="my-card">
+            <svg class="grad-cap-top" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <path d="M256 32L32 128l224 96 224-96L256 32z" fill="#333"/>
+                <path d="M416 172.8V320c0 35.3-71.6 64-160 64s-160-28.7-160-64V172.8l160 68.6 160-68.6z" fill="#444"/>
+                <path d="M448 128v192h-32V128h32z" fill="#e5b869"/>
+            </svg>
+
+            <div class="left-side">
+                <h1 class="text-thu-moi">Thu moi</h1>
+                <h2 class="text-ki-yeu">KI YEU</h2>
+                <div style="margin-top: 15px; text-align: center;">
+                    <span style="font-size: 10px; color: #999; letter-spacing: 2px;">FROM</span>
+                    <p class="owner-name" id="out-owner">Your Name</p>
+                </div>
+                <p style="font-size: 11px; font-style: italic; color: #666; margin-top: auto;">"Thanh xuân này tuyệt vời nhất là<br>được làm bạn cùng cậu!"</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="right-side">
+                <div class="title-main">INVITATION</div>
+                <div style="font-size: 14px; text-align: center; line-height: 1.8;">
+                    Thân mời cậu: <span id="out-name" class="guest-name">Người bạn của tớ</span><br>
+                    Đến dự buổi chụp kỉ yếu cùng tớ nhé!
+                </div>
+                <div class="class-text" id="out-class">Class of 12A4</div>
+                <div class="date-box">
+                    <span id="out-month">THÁNG 03</span>
+                    <span class="big-day" id="out-day">01</span>
+                    <span id="out-time">2026</span>
+                </div>
+                <div class="location" id="out-loc">Trường THPT TG2</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tạo hiệu ứng hoa đào bay phủ lên trên
+        const container = document.getElementById('blossoms-container');
+        for (let i = 0; i < 20; i++) {
+            let petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * 100 + '%';
+            petal.style.width = petal.style.height = (Math.random() * 10 + 6) + 'px';
+            petal.style.animationDuration = (Math.random() * 6 + 4) + 's';
+            petal.style.animationDelay = Math.random() * 5 + 's';
+            container.appendChild(petal);
+        }
+
+        function sync() {
+            const guest = document.getElementById('in-name').value;
+            const owner = document.getElementById('in-owner').value;
+            const dateVal = document.getElementById('in-date').value;
+            const cls = document.getElementById('in-class').value;
+            const loc = document.getElementById('in-loc').value;
+
+            document.getElementById('out-name').innerText = guest || "Người bạn của tớ";
+            document.getElementById('out-owner').innerText = owner || "Your Name";
+            document.getElementById('out-class').innerText = "Class of " + (cls || "12A4");
+            document.getElementById('out-loc').innerText = loc;
+
+            if(dateVal) {
+                const d = new Date(dateVal);
+                document.getElementById('out-day').innerText = String(d.getDate()).padStart(2, '0');
+                document.getElementById('out-month').innerText = "THÁNG " + String(d.getMonth() + 1).padStart(2, '0');
+                document.getElementById('out-time').innerText = d.getFullYear();
+            }
+        }
+
+        function saveImage() {
+            const panel = document.getElementById('control-panel');
+            const toast = document.getElementById('notification');
+            panel.style.display = 'none';
+
+            // Khi chụp ảnh, hoa đào (z-index 9999) sẽ không bị dính vào ảnh vì nằm ngoài vùng #my-card
+            html2canvas(document.getElementById('my-card'), { scale: 3, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'thiep-ki-yeu-ban-be.png';
+                link.href = canvas.toDataURL();
+                link.click();
+                
+                panel.style.display = 'flex';
+                toast.style.display = 'block';
+                setTimeout(() => { toast.style.display = 'none'; }, 6000);
+            });
+        }
+        sync();
+    </script>
+</body>
+</html>
