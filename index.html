@@ -49,13 +49,15 @@
         #capture-area { padding: 60px 20px; z-index: 5; }
         .invitation-card {
             background-color: white; width: 850px; height: 550px; display: flex;
-            position: relative; padding: 40px; box-sizing: border-box;
+            position: relative; padding: 70px 40px 40px 40px; /* Tăng padding trên để chừa chỗ cho mũ */
+            box-sizing: border-box;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
         }
 
+        /* Đã sửa: Vị trí mũ nằm TRONG card và không bị âm top */
         .grad-cap-top {
-            position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
-            width: 120px; z-index: 10;
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 110px; z-index: 10;
         }
 
         .left-side, .right-side { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
@@ -68,7 +70,6 @@
         .guest-name { font-weight: 700; color: #b38b4d; font-size: 18px; }
         .class-text { font-family: 'Great Vibes', cursive; font-size: 40px; color: var(--gold); margin: 10px 0; }
         
-        /* Cải tiến phần Date Box để chứa thêm giờ */
         .date-box { display: flex; align-items: center; gap: 12px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 8px 20px; margin-bottom: 15px; }
         .big-day { font-size: 35px; color: var(--gold); font-family: 'Playfair Display', serif; }
         .date-info-stack { display: flex; flex-direction: column; font-size: 11px; text-align: left; line-height: 1.2; font-weight: 600; }
@@ -103,8 +104,8 @@
             </svg>
 
             <div class="left-side">
-                <h1 class="text-thu-moi">Thu moi</h1>
-                <h2 class="text-ki-yeu">KI YEU</h2>
+                <h1 class="text-thu-moi">Thu mời</h1>
+                <h2 class="text-ki-yeu">KỈ YẾU</h2>
                 <div style="margin-top: 15px; text-align: center;">
                     <span style="font-size: 10px; color: #999; letter-spacing: 2px;">FROM</span>
                     <p class="owner-name" id="out-owner">Your Name</p>
@@ -140,7 +141,7 @@
     </div>
 
     <script>
-        // Tạo hiệu ứng hoa đào bay phủ lên trên
+        // Hiệu ứng hoa đào
         const container = document.getElementById('blossoms-container');
         for (let i = 0; i < 20; i++) {
             let petal = document.createElement('div');
@@ -158,7 +159,7 @@
             let h = parseInt(hours);
             const ampm = h >= 12 ? 'PM' : 'AM';
             h = h % 12;
-            h = h ? h : 12; // 0 thành 12
+            h = h ? h : 12;
             return `${String(h).padStart(2, '0')}:${minutes} ${ampm}`;
         }
 
@@ -174,8 +175,6 @@
             document.getElementById('out-owner').innerText = owner || "Your Name";
             document.getElementById('out-class').innerText = "Class of " + (cls || "12A4");
             document.getElementById('out-loc').innerText = loc;
-            
-            // Cập nhật giờ hiển thị
             document.getElementById('out-time-display').innerText = formatTime(timeVal);
 
             if(dateVal) {
@@ -191,9 +190,14 @@
             const toast = document.getElementById('notification');
             panel.style.display = 'none';
 
-            html2canvas(document.getElementById('my-card'), { scale: 3, useCORS: true }).then(canvas => {
+            // html2canvas chụp nội dung của #my-card (đã bao gồm mũ)
+            html2canvas(document.getElementById('my-card'), { 
+                scale: 3, 
+                useCORS: true,
+                backgroundColor: null // Đảm bảo nền trong suốt nếu cần
+            }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'thiep-ki-yeu-ban-be.png';
+                link.download = 'thiep-ki-yeu-' + (document.getElementById('in-name').value || 'ban-be') + '.png';
                 link.href = canvas.toDataURL();
                 link.click();
                 
@@ -202,7 +206,6 @@
                 setTimeout(() => { toast.style.display = 'none'; }, 6000);
             });
         }
-        // Gọi sync lần đầu để hiển thị giá trị mặc định
         sync();
     </script>
 </body>
