@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiệp Kỉ Yếu - Hoàn Chỉnh</title>
+    <title>Thiệp Kỉ Yếu - Căn Chỉnh Chuẩn</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -25,28 +25,38 @@
         .invitation-card {
             background-color: white; width: 850px; height: 550px; display: flex;
             position: relative; 
-            padding: 100px 40px 40px 40px; /* Tăng padding trên để nhường chỗ cho mũ to */
+            padding: 40px; 
             box-sizing: border-box;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
             border: 1px solid #eee;
+            overflow: hidden; /* Đảm bảo không bị tràn khi lưu */
         }
 
-        /* CHIẾC MŨ: Đã chỉnh to lên và căn giữa chuẩn */
+        /* CHIẾC MŨ: Đã căn chỉnh chính xác trên thanh chia */
         .grad-cap-fix {
             position: absolute;
-            top: 15px; /* Vị trí phía trên cùng */
-            left: 50%;
-            transform: translateX(-50%); /* Căn giữa tuyệt đối */
-            width: 160px; /* Tăng kích thước to hơn */
-            height: 110px;
+            top: 20px; /* Khoảng cách từ trên xuống */
+            left: 50%; /* Đưa tâm vào giữa thiệp */
+            transform: translateX(-50%); /* Dịch ngược lại 50% chiều rộng mũ để tâm mũ trùng tâm thiệp */
+            width: 180px; /* To hơn nữa theo yêu cầu */
+            height: 120px;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 32L32 128l224 96 224-96L256 32z' fill='%23333'/%3E%3Cpath d='M416 172.8V320c0 35.3-71.6 64-160 64s-160-28.7-160-64V172.8l160 68.6 160-68.6z' fill='%23444'/%3E%3Cpath d='M448 128v192h-32V128h32z' fill='%23e5b869'/%3E%3C/svg%3E");
             background-size: contain;
             background-repeat: no-repeat;
-            z-index: 10;
+            z-index: 20;
         }
 
-        .left-side, .right-side { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .divider { width: 1px; background: #eee; height: 80%; margin: 0 20px; }
+        .left-side, .right-side { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5; }
+        
+        /* Thanh chia trung tâm */
+        .divider { 
+            width: 1px; 
+            background: #eee; 
+            height: 70%; 
+            margin: 0; /* Bỏ margin để không làm lệch tâm */
+            position: relative;
+        }
+
         .text-thu-moi { font-family: 'Great Vibes', cursive; font-size: 70px; margin: 0; }
         .text-ki-yeu { font-family: 'Playfair Display', serif; font-size: 55px; color: var(--gold); letter-spacing: 4px; margin: 0; }
         .owner-name { font-family: 'Great Vibes', cursive; font-size: 35px; color: var(--dark); margin: 5px 0; }
@@ -77,7 +87,7 @@
             <div class="left-side">
                 <h1 class="text-thu-moi">Thu mời</h1>
                 <h2 class="text-ki-yeu">KỈ YẾU</h2>
-                <div style="text-align: center; margin-top: 10px;">
+                <div style="text-align: center; margin-top: 15px;">
                     <span style="font-size: 10px; color: #999;">FROM</span>
                     <p class="owner-name" id="out-owner">Your Name</p>
                 </div>
@@ -139,14 +149,15 @@
             const card = document.getElementById('my-card');
             const toast = document.getElementById('notification');
             
+            // Chụp hình
             html2canvas(card, { 
                 scale: 3, 
                 useCORS: true,
-                backgroundColor: "#ffffff" // Đảm bảo nền trắng sạch sẽ
+                backgroundColor: "#ffffff"
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'thiep-ki-yeu.png';
-                link.href = canvas.toDataURL("image/png");
+                link.href = canvas.toURL ? canvas.toDataURL("image/png") : canvas.toDataURL();
                 link.click();
                 toast.style.display = 'block';
                 setTimeout(() => toast.style.display = 'none', 3000);
