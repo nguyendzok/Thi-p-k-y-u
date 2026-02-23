@@ -13,12 +13,8 @@
         :root { --gold: #e5b869; --dark: #3a3a3a; --bg-color: #fffaf0; }
         body { margin: 0; background-color: var(--bg-color); display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-        /* --- 1. LỚP HOA ĐÀO --- */
-        .cherry-blossoms { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            pointer-events: none; 
-            z-index: 9999; 
-        }
+        /* --- HOA ĐÀO RƠI --- */
+        .cherry-blossoms { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .petal { position: absolute; background-color: #ffb7c5; border-radius: 15px 0 15px 15px; opacity: 0.8; animation: fall linear infinite; box-shadow: 0 0 8px rgba(255,183,197,0.5); }
         @keyframes fall {
             0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
@@ -35,45 +31,42 @@
         .input-group { display: flex; flex-direction: column; gap: 4px; }
         .input-group label { font-size: 10px; font-weight: 700; color: var(--gold); }
         .input-group input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; }
-        
         .btn-save { background: #d4a75a; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: 700; cursor: pointer; }
-
-        /* --- THÔNG BÁO --- */
-        #notification {
-            position: fixed; bottom: 20px; right: 20px; background: #333; color: white;
-            padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-left: 5px solid var(--gold);
-        }
 
         /* --- THIẾT KẾ THIỆP --- */
         #capture-area { padding: 60px 20px; z-index: 5; }
         .invitation-card {
             background-color: white; width: 850px; height: 550px; display: flex;
-            position: relative; padding: 70px 40px 40px 40px; /* Tăng padding trên để chừa chỗ cho mũ */
+            position: relative; 
+            /* QUAN TRỌNG: Tăng padding-top để chừa chỗ cho mũ bên trong card */
+            padding: 80px 40px 40px 40px; 
             box-sizing: border-box;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
         }
 
-        /* Đã sửa: Vị trí mũ nằm TRONG card và không bị âm top */
+        /* QUAN TRỌNG: Chỉnh lại tọa độ để mũ nằm gọn trong vùng chụp */
         .grad-cap-top {
-            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-            width: 110px; z-index: 10;
+            position: absolute; 
+            top: 15px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 120px; 
+            z-index: 10;
         }
 
         .left-side, .right-side { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .divider { width: 1px; background: #eee; height: 80%; margin: 0 20px; }
-
         .text-thu-moi { font-family: 'Great Vibes', cursive; font-size: 70px; margin: 0; }
         .text-ki-yeu { font-family: 'Playfair Display', serif; font-size: 55px; color: var(--gold); letter-spacing: 4px; margin: 0; }
         .owner-name { font-family: 'Great Vibes', cursive; font-size: 35px; color: var(--dark); margin: 5px 0; }
         .title-main { font-family: 'Playfair Display', serif; font-size: 26px; border-bottom: 2px solid var(--gold); padding-bottom: 5px; margin-bottom: 20px; }
         .guest-name { font-weight: 700; color: #b38b4d; font-size: 18px; }
         .class-text { font-family: 'Great Vibes', cursive; font-size: 40px; color: var(--gold); margin: 10px 0; }
-        
         .date-box { display: flex; align-items: center; gap: 12px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 8px 20px; margin-bottom: 15px; }
         .big-day { font-size: 35px; color: var(--gold); font-family: 'Playfair Display', serif; }
         .date-info-stack { display: flex; flex-direction: column; font-size: 11px; text-align: left; line-height: 1.2; font-weight: 600; }
-        .location { font-size: 12px; font-weight: 700; }
+        
+        #notification { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -90,10 +83,7 @@
         <button class="btn-save" onclick="saveImage()">LƯU THIỆP</button>
     </div>
 
-    <div id="notification">
-        <strong>✓ Đang tải xuống!</strong><br>
-        Mở phần <b>Tải xuống</b> của trình duyệt để xem thiệp nhé.
-    </div>
+    <div id="notification"><strong>✓ Đang tải xuống!</strong></div>
 
     <div id="capture-area">
         <div class="invitation-card" id="my-card">
@@ -134,8 +124,7 @@
                         <span id="out-time-display" style="font-size: 16px;">09:30 AM</span>
                     </div>
                 </div>
-
-                <div class="location" id="out-loc">Trường THPT TG2</div>
+                <div style="font-size: 12px; font-weight: 700;" id="out-loc">Trường THPT TG2</div>
             </div>
         </div>
     </div>
@@ -158,27 +147,19 @@
             const [hours, minutes] = timeStr.split(':');
             let h = parseInt(hours);
             const ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12;
-            h = h ? h : 12;
+            h = h % 12 || 12;
             return `${String(h).padStart(2, '0')}:${minutes} ${ampm}`;
         }
 
         function sync() {
-            const guest = document.getElementById('in-name').value;
-            const owner = document.getElementById('in-owner').value;
-            const dateVal = document.getElementById('in-date').value;
-            const timeVal = document.getElementById('in-time').value;
-            const cls = document.getElementById('in-class').value;
-            const loc = document.getElementById('in-loc').value;
+            document.getElementById('out-name').innerText = document.getElementById('in-name').value || "Người bạn của tớ";
+            document.getElementById('out-owner').innerText = document.getElementById('in-owner').value || "Your Name";
+            document.getElementById('out-class').innerText = "Class of " + (document.getElementById('in-class').value || "12A4");
+            document.getElementById('out-loc').innerText = document.getElementById('in-loc').value;
+            document.getElementById('out-time-display').innerText = formatTime(document.getElementById('in-time').value);
 
-            document.getElementById('out-name').innerText = guest || "Người bạn của tớ";
-            document.getElementById('out-owner').innerText = owner || "Your Name";
-            document.getElementById('out-class').innerText = "Class of " + (cls || "12A4");
-            document.getElementById('out-loc').innerText = loc;
-            document.getElementById('out-time-display').innerText = formatTime(timeVal);
-
-            if(dateVal) {
-                const d = new Date(dateVal);
+            const d = new Date(document.getElementById('in-date').value);
+            if(!isNaN(d)) {
                 document.getElementById('out-day').innerText = String(d.getDate()).padStart(2, '0');
                 document.getElementById('out-month').innerText = "THÁNG " + String(d.getMonth() + 1).padStart(2, '0');
                 document.getElementById('out-year').innerText = "NĂM " + d.getFullYear();
@@ -186,24 +167,17 @@
         }
 
         function saveImage() {
-            const panel = document.getElementById('control-panel');
+            const card = document.getElementById('my-card');
             const toast = document.getElementById('notification');
-            panel.style.display = 'none';
-
-            // html2canvas chụp nội dung của #my-card (đã bao gồm mũ)
-            html2canvas(document.getElementById('my-card'), { 
-                scale: 3, 
-                useCORS: true,
-                backgroundColor: null // Đảm bảo nền trong suốt nếu cần
-            }).then(canvas => {
+            
+            // Chụp toàn bộ vùng #my-card
+            html2canvas(card, { scale: 3, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'thiep-ki-yeu-' + (document.getElementById('in-name').value || 'ban-be') + '.png';
+                link.download = 'thiep-ki-yeu.png';
                 link.href = canvas.toDataURL();
                 link.click();
-                
-                panel.style.display = 'flex';
                 toast.style.display = 'block';
-                setTimeout(() => { toast.style.display = 'none'; }, 6000);
+                setTimeout(() => { toast.style.display = 'none'; }, 3000);
             });
         }
         sync();
