@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiệp Kỉ Yếu Hoàn Chỉnh</title>
+    <title>Thiệp Kỉ Yếu - Hoàn Chỉnh</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -24,26 +24,27 @@
         #capture-area { padding: 40px; }
         .invitation-card {
             background-color: white; width: 850px; height: 550px; display: flex;
-            position: relative; padding: 90px 40px 40px 40px; box-sizing: border-box;
+            position: relative; 
+            padding: 100px 40px 40px 40px; /* Tăng padding trên để nhường chỗ cho mũ to */
+            box-sizing: border-box;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
             border: 1px solid #eee;
         }
 
-        /* FIX CÁI MŨ: Dùng Div + Background thay vì SVG trực tiếp */
+        /* CHIẾC MŨ: Đã chỉnh to lên và căn giữa chuẩn */
         .grad-cap-fix {
             position: absolute;
-            top: 20px;
+            top: 15px; /* Vị trí phía trên cùng */
             left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 80px;
+            transform: translateX(-50%); /* Căn giữa tuyệt đối */
+            width: 160px; /* Tăng kích thước to hơn */
+            height: 110px;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 32L32 128l224 96 224-96L256 32z' fill='%23333'/%3E%3Cpath d='M416 172.8V320c0 35.3-71.6 64-160 64s-160-28.7-160-64V172.8l160 68.6 160-68.6z' fill='%23444'/%3E%3Cpath d='M448 128v192h-32V128h32z' fill='%23e5b869'/%3E%3C/svg%3E");
             background-size: contain;
             background-repeat: no-repeat;
             z-index: 10;
         }
 
-        /* Nội dung thiệp */
         .left-side, .right-side { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .divider { width: 1px; background: #eee; height: 80%; margin: 0 20px; }
         .text-thu-moi { font-family: 'Great Vibes', cursive; font-size: 70px; margin: 0; }
@@ -138,12 +139,10 @@
             const card = document.getElementById('my-card');
             const toast = document.getElementById('notification');
             
-            // Tăng scale để ảnh cực rõ nét
             html2canvas(card, { 
                 scale: 3, 
-                useCORS: true, 
-                logging: false,
-                allowTaint: true 
+                useCORS: true,
+                backgroundColor: "#ffffff" // Đảm bảo nền trắng sạch sẽ
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'thiep-ki-yeu.png';
