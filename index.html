@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graduation Invitation VIP</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@400;500&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -39,7 +39,7 @@ body::after{
     z-index:-1;
 }
 
-/* 🌸 SAKURA LỚP TRÊN CÙNG */
+/* 🌸 Sakura top layer */
 #sakura-container{
     position:fixed;
     inset:0;
@@ -56,17 +56,9 @@ body::after{
 }
 
 @keyframes fall{
-    0%{
-        transform:translateY(0) translateX(0) rotate(0deg);
-        opacity:0.95;
-    }
-    50%{
-        transform:translateY(50vh) translateX(60px) rotate(180deg);
-    }
-    100%{
-        transform:translateY(110vh) translateX(-60px) rotate(360deg);
-        opacity:0.8;
-    }
+    0%{transform:translateY(0) translateX(0) rotate(0deg);}
+    50%{transform:translateY(50vh) translateX(60px) rotate(180deg);}
+    100%{transform:translateY(110vh) translateX(-60px) rotate(360deg);}
 }
 
 /* Card */
@@ -87,7 +79,6 @@ body::after{
 .title{font-family:'Playfair Display';font-size:50px;font-weight:700;margin-bottom:20px;}
 #guestName{font-family:'Great Vibes';font-size:52px;margin:20px 0;display:block;}
 .desc{font-family:'Cormorant Garamond';font-size:18px;margin-bottom:25px;font-style:italic;}
-
 #time{font-family:'Libre Baskerville';font-size:20px;}
 #date{font-family:'Playfair Display';font-size:24px;font-weight:600;margin-top:5px;}
 #location{font-family:'Quicksand';font-size:18px;font-weight:500;margin-top:5px;}
@@ -144,8 +135,8 @@ button{
 .overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.5);
-    backdrop-filter:blur(5px);
+    background:rgba(0,0,0,0.55);
+    backdrop-filter:blur(6px);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -155,21 +146,32 @@ button{
 .popup{
     background:white;
     padding:40px 50px;
-    border-radius:50px;
+    border-radius:45px;
     text-align:center;
-    box-shadow:0 20px 60px rgba(0,0,0,0.4);
-    animation:popupFloat 0.6s ease;
+    box-shadow:0 25px 70px rgba(0,0,0,0.4);
+    animation:popupFloat 0.5s ease;
 }
 
 .popup h2{
-    font-family:'Great Vibes';
-    font-size:38px;
+    font-family:'Playfair Display';
+    font-size:28px;
     margin-bottom:15px;
 }
 
+.download-popup .icon{
+    font-size:55px;
+    margin-bottom:15px;
+    animation:bounce 1.2s infinite;
+}
+
 @keyframes popupFloat{
-    from{transform:scale(0.5);opacity:0;}
+    from{transform:scale(0.6);opacity:0;}
     to{transform:scale(1);opacity:1;}
+}
+
+@keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
 }
 </style>
 </head>
@@ -215,19 +217,16 @@ button{
 
 <script>
 
-/* 🌸 HOA ANH ĐÀO SVG */
+/* 🌸 Sakura */
 function createSakura(){
-    const sakura = document.createElement("div");
+    const sakura=document.createElement("div");
     sakura.className="sakura";
-
-    const size = Math.random()*18+14;
+    const size=Math.random()*18+14;
     sakura.style.width=size+"px";
     sakura.style.height=size+"px";
     sakura.style.left=Math.random()*window.innerWidth+"px";
-
     const duration=Math.random()*6+8;
     sakura.style.animationDuration=duration+"s";
-
     sakura.innerHTML=`
     <svg viewBox="0 0 32 32" width="100%" height="100%">
         <path fill="#ffb7c5"
@@ -237,17 +236,13 @@ function createSakura(){
            C6 18,4 12,10 12
            C8 6,14 8,16 2Z"/>
     </svg>`;
-
     document.getElementById("sakura-container").appendChild(sakura);
-
-    setTimeout(()=>{ sakura.remove(); }, duration*1000);
+    setTimeout(()=>{sakura.remove();},duration*1000);
 }
-
 setInterval(createSakura,400);
 
 /* Popup nhạc */
-window.onload=function(){ showMusicPopup(); };
-
+window.onload=function(){showMusicPopup();};
 function showMusicPopup(){
     const overlay=document.createElement("div");
     overlay.className="overlay";
@@ -260,42 +255,29 @@ function showMusicPopup(){
         </div>`;
     document.body.appendChild(overlay);
 }
-
-function playMusic(){
-    document.getElementById("bgMusic").play();
-    closePopup();
-}
-
-function closePopup(){
-    document.querySelector(".overlay").remove();
-}
+function playMusic(){document.getElementById("bgMusic").play();closePopup();}
+function closePopup(){document.querySelector(".overlay").remove();}
 
 /* Chỉnh sửa */
-function togglePanel(){
-    panel.style.display = panel.style.display==="block"?"none":"block";
-}
-
+function togglePanel(){panel.style.display=panel.style.display==="block"?"none":"block";}
 function updateCard(){
     if(inputHost.value) hostName.innerText=inputHost.value;
     if(inputGuest.value) guestName.innerText=inputGuest.value;
     if(inputLocation.value) location.innerText=inputLocation.value;
-
     if(inputDate.value){
         const d=new Date(inputDate.value);
         date.innerText=d.toLocaleDateString('vi-VN');
     }
-
     if(inputTime.value){
-        let [h,m]=inputTime.value.split(":");
+        let[h,m]=inputTime.value.split(":");
         let suffix=h>=12?"PM":"AM";
         h=h%12||12;
         time.innerText=h+":"+m+" "+suffix;
     }
-
     panel.style.display="none";
 }
 
-/* Lưu ảnh không viền trắng */
+/* Lưu ảnh + popup xịn */
 function saveCard(){
     controls.classList.add("hide-on-export");
     panel.classList.add("hide-on-export");
@@ -312,11 +294,31 @@ function saveCard(){
             link.click();
 
             controls.classList.remove("hide-on-export");
+
+            setTimeout(()=>{showDownloadPopup();},500);
         });
     },200);
 }
 
-</script>
+function showDownloadPopup(){
+    const overlay=document.createElement("div");
+    overlay.className="overlay";
+    overlay.innerHTML=`
+        <div class="popup download-popup">
+            <div class="icon">⬇️</div>
+            <h2>Ảnh đã tạo thành công!</h2>
+            <p>
+                Hãy mở mục <b>Tải xuống</b> của trình duyệt<br>
+                để lưu ảnh về máy 🎓
+            </p>
+            <button onclick="closeDownloadPopup()">Tuyệt vời ✨</button>
+        </div>`;
+    document.body.appendChild(overlay);
+}
+function closeDownloadPopup(){
+    document.querySelector(".overlay").remove();
+}
 
+</script>
 </body>
 </html>
