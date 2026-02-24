@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graduation Invitation Luxury</title>
+<title>Graduation Luxury VIP</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -26,41 +26,74 @@ body{
     inset:0;
     background:url("https://images.unsplash.com/photo-1490750967868-88aa4486c946") center/cover no-repeat;
     filter:blur(10px) brightness(1.1);
-    z-index:-2;
+    z-index:-3;
 }
 
 .overlay{
     position:fixed;
     inset:0;
     background:rgba(255,255,255,0.5);
+    z-index:-2;
+}
+
+/* ===== SAKURA VIP ===== */
+.sakura{
+    position:fixed;
+    top:-40px;
+    width:20px;
+    height:20px;
+    background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
+    pointer-events:none;
+    animation:fall linear forwards;
     z-index:-1;
+}
+
+@keyframes fall{
+    0%{
+        transform:translateY(0) translateX(0) rotate(0deg) scale(0.8);
+        opacity:0.9;
+    }
+    50%{
+        transform:translateY(50vh) translateX(60px) rotate(360deg) scale(1);
+    }
+    100%{
+        transform:translateY(110vh) translateX(-80px) rotate(720deg) scale(0.7);
+        opacity:0;
+    }
 }
 
 /* ===== CARD ===== */
 .card{
-    width:460px;
-    padding:60px 40px;
+    width:470px;
+    padding:60px 45px;
     border-radius:45px;
     background:rgba(255,255,255,0.75);
     backdrop-filter:blur(30px);
     border:2px solid rgba(255,255,255,0.9);
-    box-shadow:0 40px 80px rgba(0,0,0,0.25);
+    box-shadow:0 40px 90px rgba(0,0,0,0.25);
     text-align:center;
     color:#2f3e63;
+    animation:fadeUp 1.5s ease;
+    z-index:1;
+}
+
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 .invite{
     font-family:'Great Vibes',cursive;
-    font-size:44px;
+    font-size:46px;
     margin-bottom:10px;
 }
 
 .title{
     font-family:'Playfair Display',serif;
-    font-size:56px;
+    font-size:58px;
     font-weight:700;
     margin-bottom:25px;
-    letter-spacing:3px;
+    letter-spacing:4px;
 }
 
 .desc{font-size:15px;line-height:1.8;margin-bottom:30px;}
@@ -73,10 +106,10 @@ body{
 .footer{
     margin-top:30px;
     font-family:'Great Vibes',cursive;
-    font-size:30px;
+    font-size:32px;
 }
 
-/* ===== CREDIT (TOP) ===== */
+/* ===== CREDIT ===== */
 .creator{
     position:fixed;
     top:15px;
@@ -94,6 +127,7 @@ body{
     display:flex;
     gap:10px;
 }
+
 button{
     padding:10px 18px;
     border:none;
@@ -103,68 +137,57 @@ button{
     color:white;
 }
 
-/* ===== POPUP MUSIC ===== */
+/* ===== PANEL ===== */
+.panel{
+    position:fixed;
+    right:20px;
+    bottom:90px;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+    width:260px;
+    display:none;
+}
+
+.panel input{
+    width:100%;
+    margin-bottom:10px;
+    padding:8px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+/* ===== POPUP ===== */
 .popup-overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.4);
-    backdrop-filter:blur(6px);
+    background:rgba(255,255,255,0.4);
+    backdrop-filter:blur(10px);
     display:flex;
     justify-content:center;
     align-items:center;
-    z-index:999;
+    z-index:10;
+    animation:fadeIn 0.6s ease;
 }
 
 .popup{
     background:rgba(255,255,255,0.9);
     padding:35px;
-    border-radius:25px;
-    width:320px;
+    border-radius:30px;
+    width:330px;
     text-align:center;
-    box-shadow:0 30px 60px rgba(0,0,0,0.3);
-    animation:fadeIn 0.5s ease;
+    box-shadow:0 30px 70px rgba(0,0,0,0.3);
 }
 
 @keyframes fadeIn{
-    from{transform:scale(0.8);opacity:0;}
-    to{transform:scale(1);opacity:1;}
-}
-
-.popup h3{
-    font-family:'Playfair Display',serif;
-    margin-bottom:15px;
-}
-
-.popup-buttons{
-    margin-top:20px;
-    display:flex;
-    justify-content:center;
-    gap:15px;
-}
-
-.popup-buttons button{
-    padding:8px 16px;
-    border-radius:20px;
+    from{opacity:0;}
+    to{opacity:1;}
 }
 
 /* Hide when exporting */
 .hide-on-export{
     display:none !important;
-}
-
-/* Sakura */
-.sakura{
-    position:fixed;
-    top:-30px;
-    width:22px;
-    height:22px;
-    background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
-    animation:fall linear forwards;
-}
-@keyframes fall{
-    0%{transform:translateY(0) translateX(0) rotate(0deg);}
-    50%{transform:translateY(50vh) translateX(40px) rotate(360deg);}
-    100%{transform:translateY(110vh) translateX(-60px) rotate(720deg);opacity:0;}
 }
 </style>
 </head>
@@ -177,33 +200,50 @@ button{
 <div class="creator" id="creator">Website by HNN</div>
 
 <div class="card" id="card">
+
     <div class="invite">You're Invited</div>
     <div class="title">GRADUATION</div>
+
     <div class="desc">
         Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của 
         <strong id="guestName">Bạn</strong>.
     </div>
+
     <div class="section-title">THỜI GIAN</div>
     <div class="info" id="time">10:00 AM</div>
     <div class="info" id="date">01.03.2026</div>
+
     <div class="section-title">ĐỊA ĐIỂM</div>
     <div class="info" id="location">Trường THPT Tĩnh Gia 2</div>
-    <div class="footer"><span id="hostName">Tên của bạn</span></div>
+
+    <div class="footer">
+        <span id="hostName">Tên của bạn</span>
+    </div>
+
 </div>
 
 <div class="controls" id="controls">
+    <button onclick="togglePanel()">Chỉnh sửa</button>
     <button onclick="saveCard()">Lưu thiệp</button>
     <button onclick="toggleMusic()">Nhạc</button>
+</div>
+
+<div class="panel" id="panel">
+    <input type="text" id="inputHost" placeholder="Tên chủ thiệp">
+    <input type="text" id="inputGuest" placeholder="Tên người được mời">
+    <input type="date" id="inputDate">
+    <input type="time" id="inputTime">
+    <input type="text" id="inputLocation" placeholder="Địa điểm">
+    <button onclick="updateCard()">Cập nhật</button>
 </div>
 
 <!-- Popup -->
 <div class="popup-overlay" id="musicPopup">
     <div class="popup">
         <h3>Bạn có muốn phát nhạc nền không?</h3>
-        <div class="popup-buttons">
-            <button onclick="playMusic()">OK</button>
-            <button onclick="closePopup()">Huỷ</button>
-        </div>
+        <br>
+        <button onclick="playMusic()">OK</button>
+        <button onclick="closePopup()">Huỷ</button>
     </div>
 </div>
 
@@ -213,7 +253,19 @@ button{
 
 <script>
 
-/* Popup control */
+/* Sakura VIP */
+function createSakura(){
+    const sakura=document.createElement("div");
+    sakura.classList.add("sakura");
+    sakura.style.left=Math.random()*100+"vw";
+    sakura.style.animationDuration=8+Math.random()*8+"s";
+    sakura.style.opacity=0.7+Math.random()*0.3;
+    document.body.appendChild(sakura);
+    setTimeout(()=>sakura.remove(),16000);
+}
+setInterval(createSakura,120);
+
+/* Popup music */
 function playMusic(){
     bgMusic.play();
     musicPopup.style.display="none";
@@ -226,9 +278,33 @@ function toggleMusic(){
     bgMusic.paused?bgMusic.play():bgMusic.pause();
 }
 
+/* Panel */
+function togglePanel(){
+    panel.style.display=panel.style.display==="block"?"none":"block";
+}
+
+function updateCard(){
+    if(inputHost.value) hostName.innerText=inputHost.value;
+    if(inputGuest.value) guestName.innerText=inputGuest.value;
+    if(inputLocation.value) location.innerText=inputLocation.value;
+
+    if(inputDate.value){
+        const d=new Date(inputDate.value);
+        date.innerText=d.toLocaleDateString('vi-VN');
+    }
+
+    if(inputTime.value){
+        let [h,m]=inputTime.value.split(":");
+        let suffix=h>=12?"PM":"AM";
+        h=h%12||12;
+        time.innerText=h+":"+m+" "+suffix;
+    }
+}
+
 /* Export clean */
 function saveCard(){
     controls.classList.add("hide-on-export");
+    panel.classList.add("hide-on-export");
     creator.classList.add("hide-on-export");
     musicPopup.classList.add("hide-on-export");
 
@@ -238,26 +314,16 @@ function saveCard(){
         backgroundColor:null
     }).then(canvas=>{
         const link=document.createElement("a");
-        link.download="graduation-luxury.png";
+        link.download="graduation-super-vip.png";
         link.href=canvas.toDataURL("image/png");
         link.click();
 
         controls.classList.remove("hide-on-export");
+        panel.classList.remove("hide-on-export");
         creator.classList.remove("hide-on-export");
         musicPopup.classList.remove("hide-on-export");
     });
 }
-
-/* Sakura */
-function createSakura(){
-    const sakura=document.createElement("div");
-    sakura.classList.add("sakura");
-    sakura.style.left=Math.random()*100+"vw";
-    sakura.style.animationDuration=8+Math.random()*8+"s";
-    document.body.appendChild(sakura);
-    setTimeout(()=>sakura.remove(),16000);
-}
-setInterval(createSakura,140);
 
 </script>
 
