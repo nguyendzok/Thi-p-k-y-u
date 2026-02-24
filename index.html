@@ -39,35 +39,33 @@ body::after{
     z-index:-1;
 }
 
-/* 🌸 SAKURA CONTAINER */
+/* 🌸 SAKURA LỚP TRÊN CÙNG */
 #sakura-container{
     position:fixed;
     inset:0;
     pointer-events:none;
-    z-index:0;
+    z-index:999;
     overflow:hidden;
 }
 
-/* 🌸 SAKURA */
 .sakura{
     position:absolute;
     top:-50px;
-    background:url("https://pngimg.com/uploads/cherry_blossom/cherry_blossom_PNG20.png") center/contain no-repeat;
     animation:fall linear forwards;
-    opacity:0.9;
+    opacity:0.95;
 }
 
 @keyframes fall{
     0%{
         transform:translateY(0) translateX(0) rotate(0deg);
-        opacity:0.9;
+        opacity:0.95;
     }
     50%{
-        transform:translateY(50vh) translateX(40px) rotate(180deg);
+        transform:translateY(50vh) translateX(60px) rotate(180deg);
     }
     100%{
-        transform:translateY(110vh) translateX(-40px) rotate(360deg);
-        opacity:0.7;
+        transform:translateY(110vh) translateX(-60px) rotate(360deg);
+        opacity:0.8;
     }
 }
 
@@ -82,7 +80,7 @@ body::after{
     text-align:center;
     color:#2f3e63;
     position:relative;
-    z-index:2;
+    z-index:1;
 }
 
 .invite{font-family:'Great Vibes';font-size:36px;}
@@ -104,7 +102,7 @@ body::after{
     right:20px;
     display:flex;
     gap:10px;
-    z-index:3;
+    z-index:1000;
 }
 
 button{
@@ -127,7 +125,7 @@ button{
     box-shadow:0 15px 40px rgba(0,0,0,0.25);
     width:260px;
     display:none;
-    z-index:3;
+    z-index:1000;
 }
 
 .panel input{
@@ -138,7 +136,6 @@ button{
     border:1px solid #ccc;
 }
 
-/* Hide when export */
 .hide-on-export{
     display:none !important;
 }
@@ -188,7 +185,8 @@ button{
     <div class="title">GRADUATION</div>
     <span id="guestName">Bạn</span>
     <div class="desc">
-        Đây là ngày mình muốn lưu trữ những khoảnh khắc đẹp nhất của thời thanh xuân . Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của bạn
+        Đây là ngày mình muốn lưu trữ những khoảnh khắc đẹp nhất của thời thanh xuân.
+        Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của bạn
     </div>
 
     <div class="section-title">THỜI GIAN</div>
@@ -198,7 +196,7 @@ button{
     <div class="section-title">ĐỊA ĐIỂM</div>
     <div id="location">Trường THPT Tĩnh Gia 2</div>
 
-    <div class="footer" id="hostName">Tên của bạn</div>
+    <div class="footer" id="hostName">Nguyên</div>
 </div>
 
 <div class="controls" id="controls">
@@ -217,33 +215,38 @@ button{
 
 <script>
 
-/* 🌸 TẠO HOA ANH ĐÀO */
+/* 🌸 HOA ANH ĐÀO SVG */
 function createSakura(){
     const sakura = document.createElement("div");
-    sakura.className = "sakura";
+    sakura.className="sakura";
 
-    const size = Math.random()*20+15;
-    sakura.style.width = size+"px";
-    sakura.style.height = size+"px";
+    const size = Math.random()*18+14;
+    sakura.style.width=size+"px";
+    sakura.style.height=size+"px";
+    sakura.style.left=Math.random()*window.innerWidth+"px";
 
-    sakura.style.left = Math.random()*window.innerWidth+"px";
+    const duration=Math.random()*6+8;
+    sakura.style.animationDuration=duration+"s";
 
-    const duration = Math.random()*5+8;
-    sakura.style.animationDuration = duration+"s";
+    sakura.innerHTML=`
+    <svg viewBox="0 0 32 32" width="100%" height="100%">
+        <path fill="#ffb7c5"
+        d="M16 2 C18 8,24 6,22 12 C28 12,26 18,20 18
+           C22 24,16 22,16 28
+           C16 22,10 24,12 18
+           C6 18,4 12,10 12
+           C8 6,14 8,16 2Z"/>
+    </svg>`;
 
     document.getElementById("sakura-container").appendChild(sakura);
 
-    setTimeout(()=>{
-        sakura.remove();
-    }, duration*1000);
+    setTimeout(()=>{ sakura.remove(); }, duration*1000);
 }
 
-setInterval(createSakura, 500);
+setInterval(createSakura,400);
 
-/* ===== POPUP PHÁT NHẠC ===== */
-window.onload=function(){
-    showMusicPopup();
-};
+/* Popup nhạc */
+window.onload=function(){ showMusicPopup(); };
 
 function showMusicPopup(){
     const overlay=document.createElement("div");
@@ -254,8 +257,7 @@ function showMusicPopup(){
             <p>Bạn có muốn phát nhạc cho thiệp không?</p>
             <button onclick="playMusic()">Phát nhạc</button>
             <button onclick="closePopup()">Không</button>
-        </div>
-    `;
+        </div>`;
     document.body.appendChild(overlay);
 }
 
@@ -268,7 +270,7 @@ function closePopup(){
     document.querySelector(".overlay").remove();
 }
 
-/* ===== CHỈNH SỬA ===== */
+/* Chỉnh sửa */
 function togglePanel(){
     panel.style.display = panel.style.display==="block"?"none":"block";
 }
@@ -293,42 +295,25 @@ function updateCard(){
     panel.style.display="none";
 }
 
-/* ===== LƯU ẢNH ===== */
+/* Lưu ảnh không viền trắng */
 function saveCard(){
-
     controls.classList.add("hide-on-export");
     panel.classList.add("hide-on-export");
 
     setTimeout(()=>{
-        html2canvas(document.body,{scale:3,useCORS:true}).then(canvas=>{
+        html2canvas(document.getElementById("card"),{
+            scale:3,
+            useCORS:true,
+            backgroundColor:null
+        }).then(canvas=>{
             const link=document.createElement("a");
             link.download="graduation.png";
-            link.href=canvas.toDataURL();
+            link.href=canvas.toDataURL("image/png");
             link.click();
 
-            setTimeout(()=>{
-                showDownloadPopup();
-            },500);
+            controls.classList.remove("hide-on-export");
         });
     },200);
-}
-
-function showDownloadPopup(){
-    const overlay=document.createElement("div");
-    overlay.className="overlay";
-    overlay.innerHTML=`
-        <div class="popup">
-            <h2>✨ Ảnh đã tạo!</h2>
-            <p>Vào mục <b>Tải xuống</b> của trình duyệt<br>để lưu ảnh về máy 🎓</p>
-            <button onclick="closeDownloadPopup()">Đã hiểu</button>
-        </div>
-    `;
-    document.body.appendChild(overlay);
-}
-
-function closeDownloadPopup(){
-    document.querySelector(".overlay").remove();
-    controls.classList.remove("hide-on-export");
 }
 
 </script>
