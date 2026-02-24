@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graduation Invitation VIP</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500&family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -51,68 +51,17 @@ body::after{
     color:#2f3e63;
 }
 
-.invite{
-    font-family:'Great Vibes';
-    font-size:36px;
-}
+.invite{font-family:'Great Vibes';font-size:36px;}
+.title{font-family:'Playfair Display';font-size:50px;font-weight:700;margin-bottom:20px;}
+#guestName{font-family:'Great Vibes';font-size:52px;margin:20px 0;display:block;}
+.desc{font-family:'Cormorant Garamond';font-size:18px;margin-bottom:25px;font-style:italic;}
 
-.title{
-    font-family:'Playfair Display';
-    font-size:50px;
-    font-weight:700;
-    margin-bottom:20px;
-}
+#time{font-family:'Libre Baskerville';font-size:20px;}
+#date{font-family:'Playfair Display';font-size:24px;font-weight:600;margin-top:5px;}
+#location{font-family:'Quicksand';font-size:18px;font-weight:500;margin-top:5px;}
 
-#guestName{
-    font-family:'Great Vibes';
-    font-size:52px;
-    margin:20px 0;
-    display:block;
-}
-
-.desc{
-    font-family:'Cormorant Garamond';
-    font-size:18px;
-    margin-bottom:25px;
-    font-style:italic;
-}
-
-/* ===== FONT PHÂN TÁCH ===== */
-
-#time{
-    font-family:'Libre Baskerville',serif;
-    font-size:20px;
-    letter-spacing:1px;
-}
-
-#date{
-    font-family:'Playfair Display',serif;
-    font-size:24px;
-    font-weight:600;
-    margin-top:5px;
-}
-
-#location{
-    font-family:'Quicksand',sans-serif;
-    font-size:18px;
-    font-weight:500;
-    margin-top:5px;
-}
-
-/* Section title */
-.section-title{
-    font-family:'Poppins';
-    font-size:13px;
-    letter-spacing:3px;
-    margin-top:18px;
-    color:#4b5b7a;
-}
-
-.footer{
-    margin-top:25px;
-    font-family:'Great Vibes';
-    font-size:28px;
-}
+.section-title{font-size:13px;letter-spacing:3px;margin-top:18px;}
+.footer{margin-top:25px;font-family:'Great Vibes';font-size:28px;}
 
 /* Controls */
 .controls{
@@ -153,12 +102,17 @@ button{
     border:1px solid #ccc;
 }
 
+/* Ẩn khi xuất */
+.hide-on-export{
+    display:none !important;
+}
+
 /* Popup */
 .overlay{
     position:fixed;
     inset:0;
     background:rgba(0,0,0,0.5);
-    backdrop-filter:blur(6px);
+    backdrop-filter:blur(5px);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -168,21 +122,21 @@ button{
 .popup{
     background:white;
     padding:40px 50px;
-    border-radius:60px;
+    border-radius:50px;
     text-align:center;
     box-shadow:0 20px 60px rgba(0,0,0,0.4);
-    animation:popupFloat 0.8s ease;
+    animation:popupFloat 0.6s ease;
 }
 
 .popup h2{
     font-family:'Great Vibes';
-    font-size:42px;
+    font-size:38px;
     margin-bottom:15px;
 }
 
 @keyframes popupFloat{
-    0%{transform:scale(0.5) translateY(80px);opacity:0;}
-    100%{transform:scale(1);opacity:1;}
+    from{transform:scale(0.5);opacity:0;}
+    to{transform:scale(1);opacity:1;}
 }
 </style>
 </head>
@@ -191,8 +145,7 @@ button{
 
 <audio id="bgMusic" src="music.mp3"></audio>
 
-<div class="card">
-
+<div class="card" id="card">
     <div class="invite">You're Invited</div>
     <div class="title">GRADUATION</div>
 
@@ -210,15 +163,14 @@ button{
     <div id="location">Trường THPT Tĩnh Gia 2</div>
 
     <div class="footer" id="hostName">Tên của bạn</div>
-
 </div>
 
-<div class="controls">
+<div class="controls hide-on-export" id="controls">
     <button onclick="togglePanel()">Chỉnh sửa</button>
     <button onclick="saveCard()">Lưu thiệp</button>
 </div>
 
-<div class="panel" id="panel">
+<div class="panel hide-on-export" id="panel">
     <input type="text" id="inputHost" placeholder="Tên chủ thiệp">
     <input type="text" id="inputGuest" placeholder="Tên người mời">
     <input type="date" id="inputDate">
@@ -228,70 +180,68 @@ button{
 </div>
 
 <script>
-window.onload=function(){showMusicPopup();};
 
-function showMusicPopup(){
+function togglePanel(){
+    panel.classList.toggle("hide-on-export");
+}
+
+function updateCard(){
+    if(inputHost.value) hostName.innerText=inputHost.value;
+    if(inputGuest.value) guestName.innerText=inputGuest.value;
+    if(inputLocation.value) location.innerText=inputLocation.value;
+
+    if(inputDate.value){
+        const d=new Date(inputDate.value);
+        date.innerText=d.toLocaleDateString('vi-VN');
+    }
+
+    if(inputTime.value){
+        let [h,m]=inputTime.value.split(":");
+        let suffix=h>=12?"PM":"AM";
+        h=h%12||12;
+        time.innerText=h+":"+m+" "+suffix;
+    }
+
+    panel.classList.add("hide-on-export");
+}
+
+function saveCard(){
+
+    controls.classList.add("hide-on-export");
+    panel.classList.add("hide-on-export");
+
+    setTimeout(()=>{
+        html2canvas(document.body,{scale:3,useCORS:true}).then(canvas=>{
+            const link=document.createElement("a");
+            link.download="graduation.png";
+            link.href=canvas.toDataURL();
+            link.click();
+
+            setTimeout(()=>{
+                showDownloadPopup();
+            },500);
+        });
+    },200);
+}
+
+function showDownloadPopup(){
     const overlay=document.createElement("div");
     overlay.className="overlay";
     overlay.innerHTML=`
         <div class="popup">
-            <h2>🎵 Chào mừng 🎓</h2>
-            <p>Bạn có muốn bật nhạc nền không?</p>
-            <button onclick="playMusic()">Phát nhạc</button>
-            <button onclick="closePopup()">Không</button>
+            <h2>✨ Ảnh đã tạo thành công!</h2>
+            <p>Vào mục <b>Tải xuống</b> của trình duyệt<br>để lưu ảnh về máy nhé 🎓</p>
+            <button onclick="closePopup()">Đã hiểu</button>
         </div>
     `;
     document.body.appendChild(overlay);
 }
 
-function playMusic(){
-    document.getElementById("bgMusic").play();
-    closePopup();
-}
-
 function closePopup(){
     document.querySelector(".overlay").remove();
+    controls.classList.remove("hide-on-export");
 }
 
-function togglePanel(){
-    const panel=document.getElementById("panel");
-    panel.style.display=panel.style.display==="block"?"none":"block";
-}
-
-function updateCard(){
-    const host=inputHost.value;
-    const guest=inputGuest.value;
-    const date=inputDate.value;
-    const time=inputTime.value;
-    const location=inputLocation.value;
-
-    if(host) hostName.innerText=host;
-    if(guest) guestName.innerText=guest;
-    if(location) document.getElementById("location").innerText=location;
-
-    if(date){
-        const d=new Date(date);
-        document.getElementById("date").innerText=d.toLocaleDateString('vi-VN');
-    }
-
-    if(time){
-        let [h,m]=time.split(":");
-        let suffix=h>=12?"PM":"AM";
-        h=h%12||12;
-        document.getElementById("time").innerText=h+":"+m+" "+suffix;
-    }
-
-    panel.style.display="none";
-}
-
-function saveCard(){
-    html2canvas(document.body,{scale:3,useCORS:true}).then(canvas=>{
-        const link=document.createElement("a");
-        link.download="graduation.png";
-        link.href=canvas.toDataURL();
-        link.click();
-    });
-}
 </script>
 
 </body>
