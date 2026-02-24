@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graduation Invitation VIP</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -18,32 +18,33 @@ body{
     align-items:center;
     overflow:hidden;
     font-family:'Poppins',sans-serif;
-    background:linear-gradient(to bottom,#8fb3d9,#e6f0fa);
+    background:linear-gradient(to bottom,#87c6ff,#eaf6ff);
 }
 
-/* Background */
+/* 🌸 Background: Cánh đồng hoa + trời xanh */
 body::before{
     content:"";
     position:fixed;
     inset:0;
-    background:url("https://images.unsplash.com/photo-1526045612212-70caf35c14df") center/cover no-repeat;
-    filter:blur(10px) brightness(1.1);
+    background:url("https://images.unsplash.com/photo-1506744038136-46273834b3fb") center/cover no-repeat;
+    filter:blur(6px) brightness(1.1);
     z-index:-2;
 }
+
 body::after{
     content:"";
     position:fixed;
     inset:0;
-    background:rgba(255,255,255,0.4);
+    background:rgba(255,255,255,0.25);
     z-index:-1;
 }
 
-/* Card */
+/* Card Glass */
 .card{
     width:430px;
     padding:50px 40px;
     border-radius:40px;
-    backdrop-filter:blur(30px);
+    backdrop-filter:blur(35px);
     background:rgba(255,255,255,0.35);
     box-shadow:0 30px 80px rgba(0,0,0,0.3);
     text-align:center;
@@ -68,22 +69,49 @@ body::after{
     margin-bottom:20px;
 }
 
-.guest-center{
-    margin:25px 0 30px 0;
-}
-
 #guestName{
     font-family:'Great Vibes',cursive;
     font-size:52px;
     display:block;
-    text-align:center;
+    margin:20px 0;
     text-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
-.desc{margin-bottom:20px;line-height:1.6;}
+/* Nội dung mời */
+.desc{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;
+    line-height:1.8;
+    font-style:italic;
+    margin-bottom:25px;
+}
 
-.section-title{margin-top:15px;font-weight:600;}
-.info{margin:5px 0;}
+/* Section title */
+.section-title{
+    font-family:'Quicksand',sans-serif;
+    font-size:13px;
+    letter-spacing:2px;
+    margin-top:15px;
+}
+
+/* Time */
+#time{
+    font-family:'Libre Baskerville',serif;
+    font-size:20px;
+}
+
+/* Date */
+#date{
+    font-family:'Playfair Display',serif;
+    font-size:22px;
+    font-weight:600;
+}
+
+/* Location */
+#location{
+    font-family:'Quicksand',sans-serif;
+    font-size:17px;
+}
 
 .footer{
     margin-top:25px;
@@ -130,57 +158,27 @@ button{
     border:1px solid #ccc;
 }
 
-/* Sakura */
-.sakura{
-    position:fixed;
-    top:-20px;
-    width:20px;
-    height:20px;
-    background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
-    animation:fall linear infinite;
-    opacity:0.9;
-}
-
-@keyframes fall{
-    to{
-        transform:translateY(110vh) rotate(720deg);
-        opacity:0;
-    }
-}
-
-/* Music Bubble Popup */
-.music-popup{
+/* Popup Bubble */
+.popup{
     position:fixed;
     top:50%;
     left:50%;
     transform:translate(-50%,-50%) scale(0);
     background:white;
-    padding:30px 35px;
-    border-radius:50px;
+    padding:30px 40px;
+    border-radius:60px;
     box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    font-family:'Great Vibes',cursive;
+    font-size:26px;
     text-align:center;
     z-index:999;
-    animation:bubbleIn 0.6s forwards;
+    animation:bubbleIn 0.5s forwards;
 }
 
 @keyframes bubbleIn{
     0%{transform:translate(-50%,-50%) scale(0);}
     60%{transform:translate(-50%,-50%) scale(1.1);}
     100%{transform:translate(-50%,-50%) scale(1);}
-}
-
-.music-popup button{
-    margin:10px 5px 0 5px;
-}
-
-/* Credit */
-.creator{
-    position:fixed;
-    top:10px;
-    width:100%;
-    text-align:center;
-    font-family:'Great Vibes',cursive;
-    font-size:22px;
 }
 
 .hide-on-export{
@@ -191,30 +189,25 @@ button{
 
 <body>
 
-<div class="creator" id="creator">HNN</div>
-
 <div class="card" id="card">
     <div class="invite">You're Invited</div>
     <div class="title">GRADUATION</div>
 
-    <div class="guest-center">
-        <span id="guestName">Bạn</span>
-    </div>
+    <span id="guestName">Bạn</span>
 
     <div class="desc">
-        Thật hạnh phúc khi thanh xuân có sự góp mặt của bạn.
+        Đây là ngày mình muốn lưu trữ những khoảnh khắc đẹp nhất của thời thanh xuân.
+        Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của bạn.
     </div>
 
     <div class="section-title">THỜI GIAN</div>
-    <div class="info" id="time">10:00 AM</div>
-    <div class="info" id="date">01.03.2026</div>
+    <div id="time">10:00 AM</div>
+    <div id="date">01.03.2026</div>
 
     <div class="section-title">ĐỊA ĐIỂM</div>
-    <div class="info" id="location">Trường THPT Tĩnh Gia 2</div>
+    <div id="location">Trường THPT Tĩnh Gia 2</div>
 
-    <div class="footer">
-        <span id="hostName">Tên của bạn</span>
-    </div>
+    <div class="footer" id="hostName">Tên của bạn</div>
 </div>
 
 <div class="controls" id="controls">
@@ -231,43 +224,19 @@ button{
     <button onclick="updateCard()">Cập nhật</button>
 </div>
 
-<div class="music-popup" id="musicPopup">
-    <div style="font-family:'Great Vibes',cursive;font-size:28px;">
-        Phát nhạc nền?
-    </div>
-    <button onclick="playMusic()">OK</button>
-    <button onclick="closePopup()">Huỷ</button>
-</div>
-
-<audio id="bgMusic" loop>
-<source src="music.mp3" type="audio/mp3">
-</audio>
-
 <script>
-/* Sakura */
-function createSakura(){
-    const s=document.createElement("div");
-    s.classList.add("sakura");
-    s.style.left=Math.random()*100+"vw";
-    s.style.animationDuration=8+Math.random()*8+"s";
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),16000);
-}
-setInterval(createSakura,120);
-
-/* Panel */
 function togglePanel(){
     const p=document.getElementById("panel");
     p.style.display=p.style.display==="block"?"none":"block";
 }
 
-/* Update */
 function updateCard(){
     const host=document.getElementById("hostName");
     const guest=document.getElementById("guestName");
     const location=document.getElementById("location");
     const time=document.getElementById("time");
     const date=document.getElementById("date");
+    const panel=document.getElementById("panel");
 
     if(inputHost.value) host.innerText=inputHost.value;
     if(inputGuest.value) guest.innerText=inputGuest.value;
@@ -284,23 +253,14 @@ function updateCard(){
         h=h%12||12;
         time.innerText=h+":"+m+" "+suffix;
     }
+
+    panel.style.display="none";
 }
 
-/* Music */
-function playMusic(){
-    document.getElementById("bgMusic").play();
-    document.getElementById("musicPopup").style.display="none";
-}
-function closePopup(){
-    document.getElementById("musicPopup").style.display="none";
-}
-
-/* Save */
 function saveCard(){
+
     document.getElementById("controls").classList.add("hide-on-export");
     document.getElementById("panel").classList.add("hide-on-export");
-    document.getElementById("creator").classList.add("hide-on-export");
-    document.getElementById("musicPopup").classList.add("hide-on-export");
 
     html2canvas(document.body,{scale:3,useCORS:true}).then(canvas=>{
         const link=document.createElement("a");
@@ -310,9 +270,18 @@ function saveCard(){
 
         document.getElementById("controls").classList.remove("hide-on-export");
         document.getElementById("panel").classList.remove("hide-on-export");
-        document.getElementById("creator").classList.remove("hide-on-export");
-        document.getElementById("musicPopup").classList.remove("hide-on-export");
+
+        showPopup();
     });
+}
+
+function showPopup(){
+    const popup=document.createElement("div");
+    popup.className="popup";
+    popup.innerHTML="✨ Ảnh đã tạo thành công! <br> Vào mục Tải xuống của trình duyệt để lưu nhé ✨";
+    document.body.appendChild(popup);
+
+    setTimeout(()=>popup.remove(),3500);
 }
 </script>
 
