@@ -6,6 +6,7 @@
 <title>Graduation Invitation VIP</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&family=Cormorant+Garamond:wght@500;600&family=Quicksand:wght@400;500&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -18,7 +19,6 @@ body{
     align-items:center;
     overflow:hidden;
     font-family:'Poppins',sans-serif;
-    background:linear-gradient(to bottom,#87c6ff,#eaf6ff);
 }
 
 /* Background */
@@ -34,7 +34,7 @@ body::after{
     content:"";
     position:fixed;
     inset:0;
-    background:rgba(255,255,255,0.25);
+    background:rgba(255,255,255,0.3);
     z-index:-1;
 }
 
@@ -43,7 +43,7 @@ body::after{
     position:fixed;
     inset:0;
     pointer-events:none;
-    z-index:999;
+    z-index:900;
 }
 .sakura{
     position:absolute;
@@ -93,7 +93,10 @@ button{
     cursor:pointer;
     background:#2f3e63;
     color:white;
+    transition:0.3s;
 }
+button:hover{transform:scale(1.05);}
+
 .panel{
     position:fixed;
     right:20px;
@@ -113,30 +116,54 @@ button{
     border-radius:10px;
     border:1px solid #ccc;
 }
+
 .hide-on-export{display:none!important;}
 
-/* Popup */
+/* Luxury Popup */
 .overlay{
     position:fixed;
     inset:0;
     background:rgba(0,0,0,0.55);
-    backdrop-filter:blur(6px);
+    backdrop-filter:blur(8px);
     display:flex;
     justify-content:center;
     align-items:center;
     z-index:9999;
+    animation:fadeIn 0.4s ease;
 }
 .popup{
-    background:white;
-    padding:40px 50px;
-    border-radius:45px;
+    background:rgba(255,255,255,0.9);
+    padding:45px 55px;
+    border-radius:35px;
     text-align:center;
-    box-shadow:0 25px 70px rgba(0,0,0,0.4);
+    box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    animation:scaleIn 0.4s ease;
 }
 .popup h2{
     font-family:'Playfair Display';
-    font-size:24px;
-    margin-bottom:15px;
+    font-size:26px;
+    margin-bottom:20px;
+}
+.popup p{
+    margin-bottom:25px;
+    font-size:15px;
+}
+.popup .btn-group{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+}
+.popup button{
+    min-width:100px;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+@keyframes scaleIn{
+    from{transform:scale(0.7);opacity:0;}
+    to{transform:scale(1);opacity:1;}
 }
 </style>
 </head>
@@ -146,19 +173,11 @@ button{
 <div id="sakura-container"></div>
 <audio id="bgMusic" src="music.mp3" loop></audio>
 
-<!-- POPUP NHẠC -->
-<div class="overlay" id="musicPopup">
-    <div class="popup">
-        <h2>🎵 Phát nhạc nền không?</h2>
-        <button onclick="startMusic()">Phát nhạc</button>
-    </div>
-</div>
-
 <div class="card" id="card">
     <div class="invite">You're Invited</div>
     <div class="title">GRADUATION</div>
     <span id="guestName">Bạn</span>
-    <div class="desc">Đây là ngày mình muốn lưu giữ những khoảnh khắc đẹp nhất.</div>
+    <div class="desc">Đây là ngày mình muốn lưu giữ những khoảnh khắc đẹp nhất của thanh xuân.</div>
 
     <div class="section-title">THỜI GIAN</div>
     <div id="time">10:00 AM</div>
@@ -171,8 +190,8 @@ button{
 </div>
 
 <div class="controls" id="controls">
-    <button onclick="togglePanel()">Chỉnh sửa</button>
-    <button onclick="saveCard()">Lưu thiệp</button>
+    <button id="editBtn">Chỉnh sửa</button>
+    <button id="saveBtn">Lưu thiệp</button>
 </div>
 
 <div class="panel" id="panel">
@@ -181,24 +200,47 @@ button{
     <input type="date" id="inputDate">
     <input type="time" id="inputTime">
     <input type="text" id="inputLocation" placeholder="Địa điểm">
-    <button onclick="updateCard()">Cập nhật</button>
+    <button id="updateBtn">Cập nhật</button>
 </div>
 
 <script>
 
-/* Nhạc */
+/* ===== POPUP PHÁT NHẠC ===== */
+window.onload=function(){
+    showMusicPopup();
+};
+
+function showMusicPopup(){
+    const overlay=document.createElement("div");
+    overlay.className="overlay";
+    overlay.innerHTML=`
+        <div class="popup">
+            <h2>Phát nhạc nền?</h2>
+            <p>Bạn có muốn bật nhạc để thiệp thêm phần cảm xúc không?</p>
+            <div class="btn-group">
+                <button onclick="startMusic()">OK</button>
+                <button onclick="closePopup()">Không</button>
+            </div>
+        </div>`;
+    document.body.appendChild(overlay);
+}
+
 function startMusic(){
     document.getElementById("bgMusic").play();
-    document.getElementById("musicPopup").remove();
+    closePopup();
 }
 
-/* Panel */
-function togglePanel(){
+function closePopup(){
+    document.querySelector(".overlay").remove();
+}
+
+/* ===== CHỈNH SỬA ===== */
+document.getElementById("editBtn").onclick=function(){
     const panel=document.getElementById("panel");
     panel.style.display=panel.style.display==="block"?"none":"block";
-}
+};
 
-function updateCard(){
+document.getElementById("updateBtn").onclick=function(){
     const host=document.getElementById("inputHost").value;
     const guest=document.getElementById("inputGuest").value;
     const date=document.getElementById("inputDate").value;
@@ -210,9 +252,11 @@ function updateCard(){
     if(date) document.getElementById("date").innerText=date.split("-").reverse().join(".");
     if(time) document.getElementById("time").innerText=time;
     if(location) document.getElementById("location").innerText=location;
-}
 
-/* Sakura */
+    document.getElementById("panel").style.display="none";
+};
+
+/* ===== SAKURA ===== */
 function createSakura(){
     const sakura=document.createElement("div");
     sakura.className="sakura";
@@ -224,22 +268,25 @@ function createSakura(){
 }
 setInterval(createSakura,500);
 
-/* Lưu ảnh */
-function saveCard(){
+/* ===== LƯU ẢNH ===== */
+document.getElementById("saveBtn").onclick=function(){
+    const controls=document.getElementById("controls");
+    const panel=document.getElementById("panel");
+
     controls.classList.add("hide-on-export");
     panel.classList.add("hide-on-export");
 
-    const card=document.getElementById("card");
-    html2canvas(card,{scale:3,useCORS:true}).then(canvas=>{
+    html2canvas(document.getElementById("card"),{scale:3,useCORS:true}).then(canvas=>{
         const link=document.createElement("a");
         link.download="graduation.png";
         link.href=canvas.toDataURL();
         link.click();
 
         controls.classList.remove("hide-on-export");
+
         showDownloadPopup();
     });
-}
+};
 
 function showDownloadPopup(){
     const overlay=document.createElement("div");
@@ -247,8 +294,10 @@ function showDownloadPopup(){
     overlay.innerHTML=`
         <div class="popup">
             <h2>Ảnh đã tạo 🎓</h2>
-            <p>Mở mục <b>Tải xuống</b> để lưu ảnh về máy</p>
-            <button onclick="this.closest('.overlay').remove()">OK</button>
+            <p>Vui lòng mở mục <b>Tải xuống</b> của trình duyệt để lưu ảnh về máy.</p>
+            <div class="btn-group">
+                <button onclick="closePopup()">OK</button>
+            </div>
         </div>`;
     document.body.appendChild(overlay);
 }
