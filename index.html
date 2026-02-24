@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graduation Luxury VIP</title>
+<title>Graduation Invitation VIP</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -18,108 +18,80 @@ body{
     align-items:center;
     overflow:hidden;
     font-family:'Poppins',sans-serif;
+    background:linear-gradient(to bottom,#8fb3d9,#e6f0fa);
 }
 
-/* ===== BACKGROUND ===== */
-.background{
+/* Background */
+body::before{
+    content:"";
     position:fixed;
     inset:0;
-    background:url("https://images.unsplash.com/photo-1490750967868-88aa4486c946") center/cover no-repeat;
+    background:url("https://images.unsplash.com/photo-1526045612212-70caf35c14df") center/cover no-repeat;
     filter:blur(10px) brightness(1.1);
-    z-index:-3;
-}
-
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(255,255,255,0.5);
     z-index:-2;
 }
-
-/* ===== SAKURA VIP ===== */
-.sakura{
+body::after{
+    content:"";
     position:fixed;
-    top:-40px;
-    width:20px;
-    height:20px;
-    background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
-    pointer-events:none;
-    animation:fall linear forwards;
+    inset:0;
+    background:rgba(255,255,255,0.4);
     z-index:-1;
 }
 
-@keyframes fall{
-    0%{
-        transform:translateY(0) translateX(0) rotate(0deg) scale(0.8);
-        opacity:0.9;
-    }
-    50%{
-        transform:translateY(50vh) translateX(60px) rotate(360deg) scale(1);
-    }
-    100%{
-        transform:translateY(110vh) translateX(-80px) rotate(720deg) scale(0.7);
-        opacity:0;
-    }
-}
-
-/* ===== CARD ===== */
+/* Card */
 .card{
-    width:470px;
-    padding:60px 45px;
-    border-radius:45px;
-    background:rgba(255,255,255,0.75);
+    width:430px;
+    padding:50px 40px;
+    border-radius:40px;
     backdrop-filter:blur(30px);
-    border:2px solid rgba(255,255,255,0.9);
-    box-shadow:0 40px 90px rgba(0,0,0,0.25);
+    background:rgba(255,255,255,0.35);
+    box-shadow:0 30px 80px rgba(0,0,0,0.3);
     text-align:center;
     color:#2f3e63;
     animation:fadeUp 1.5s ease;
-    z-index:1;
 }
 
 @keyframes fadeUp{
-    from{opacity:0; transform:translateY(40px);}
-    to{opacity:1; transform:translateY(0);}
+    from{opacity:0;transform:translateY(50px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
 .invite{
     font-family:'Great Vibes',cursive;
-    font-size:46px;
-    margin-bottom:10px;
+    font-size:36px;
 }
 
 .title{
     font-family:'Playfair Display',serif;
-    font-size:58px;
+    font-size:50px;
     font-weight:700;
-    margin-bottom:25px;
-    letter-spacing:4px;
+    margin-bottom:20px;
 }
 
-.desc{font-size:15px;line-height:1.8;margin-bottom:30px;}
-.section-title{
-    font-family:'Playfair Display',serif;
-    margin-top:20px;
-    text-decoration:underline;
+.guest-center{
+    margin:25px 0 30px 0;
 }
-.info{font-size:18px;margin:4px 0;}
-.footer{
-    margin-top:30px;
+
+#guestName{
     font-family:'Great Vibes',cursive;
-    font-size:32px;
+    font-size:52px;
+    display:block;
+    text-align:center;
+    text-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
-/* ===== CREDIT ===== */
-.creator{
-    position:fixed;
-    top:15px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:13px;
-    opacity:0.7;
+.desc{margin-bottom:20px;line-height:1.6;}
+
+.section-title{margin-top:15px;font-weight:600;}
+.info{margin:5px 0;}
+
+.footer{
+    margin-top:25px;
+    font-family:'Great Vibes',cursive;
+    font-size:28px;
 }
 
-/* ===== CONTROLS ===== */
+/* Controls */
 .controls{
     position:fixed;
     bottom:20px;
@@ -129,15 +101,15 @@ body{
 }
 
 button{
-    padding:10px 18px;
+    padding:10px 16px;
     border:none;
-    border-radius:30px;
+    border-radius:25px;
     cursor:pointer;
     background:#2f3e63;
     color:white;
 }
 
-/* ===== PANEL ===== */
+/* Panel */
 .panel{
     position:fixed;
     right:20px;
@@ -145,7 +117,7 @@ button{
     background:white;
     padding:20px;
     border-radius:20px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
     width:260px;
     display:none;
 }
@@ -158,34 +130,59 @@ button{
     border:1px solid #ccc;
 }
 
-/* ===== POPUP ===== */
-.popup-overlay{
+/* Sakura */
+.sakura{
     position:fixed;
-    inset:0;
-    background:rgba(255,255,255,0.4);
-    backdrop-filter:blur(10px);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:10;
-    animation:fadeIn 0.6s ease;
+    top:-20px;
+    width:20px;
+    height:20px;
+    background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
+    animation:fall linear infinite;
+    opacity:0.9;
 }
 
-.popup{
-    background:rgba(255,255,255,0.9);
-    padding:35px;
-    border-radius:30px;
-    width:330px;
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(720deg);
+        opacity:0;
+    }
+}
+
+/* Music Bubble Popup */
+.music-popup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    background:white;
+    padding:30px 35px;
+    border-radius:50px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
     text-align:center;
-    box-shadow:0 30px 70px rgba(0,0,0,0.3);
+    z-index:999;
+    animation:bubbleIn 0.6s forwards;
 }
 
-@keyframes fadeIn{
-    from{opacity:0;}
-    to{opacity:1;}
+@keyframes bubbleIn{
+    0%{transform:translate(-50%,-50%) scale(0);}
+    60%{transform:translate(-50%,-50%) scale(1.1);}
+    100%{transform:translate(-50%,-50%) scale(1);}
 }
 
-/* Hide when exporting */
+.music-popup button{
+    margin:10px 5px 0 5px;
+}
+
+/* Credit */
+.creator{
+    position:fixed;
+    top:10px;
+    width:100%;
+    text-align:center;
+    font-family:'Great Vibes',cursive;
+    font-size:22px;
+}
+
 .hide-on-export{
     display:none !important;
 }
@@ -194,19 +191,18 @@ button{
 
 <body>
 
-<div class="background"></div>
-<div class="overlay"></div>
-
-<div class="creator" id="creator">Website by HNN</div>
+<div class="creator" id="creator">HNN</div>
 
 <div class="card" id="card">
-
     <div class="invite">You're Invited</div>
     <div class="title">GRADUATION</div>
 
+    <div class="guest-center">
+        <span id="guestName">Bạn</span>
+    </div>
+
     <div class="desc">
-        Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của 
-        <strong id="guestName">Bạn</strong>.
+        Thật hạnh phúc khi thanh xuân có sự góp mặt của bạn.
     </div>
 
     <div class="section-title">THỜI GIAN</div>
@@ -219,32 +215,28 @@ button{
     <div class="footer">
         <span id="hostName">Tên của bạn</span>
     </div>
-
 </div>
 
 <div class="controls" id="controls">
     <button onclick="togglePanel()">Chỉnh sửa</button>
     <button onclick="saveCard()">Lưu thiệp</button>
-    <button onclick="toggleMusic()">Nhạc</button>
 </div>
 
 <div class="panel" id="panel">
     <input type="text" id="inputHost" placeholder="Tên chủ thiệp">
-    <input type="text" id="inputGuest" placeholder="Tên người được mời">
+    <input type="text" id="inputGuest" placeholder="Tên người mời">
     <input type="date" id="inputDate">
     <input type="time" id="inputTime">
     <input type="text" id="inputLocation" placeholder="Địa điểm">
     <button onclick="updateCard()">Cập nhật</button>
 </div>
 
-<!-- Popup -->
-<div class="popup-overlay" id="musicPopup">
-    <div class="popup">
-        <h3>Bạn có muốn phát nhạc nền không?</h3>
-        <br>
-        <button onclick="playMusic()">OK</button>
-        <button onclick="closePopup()">Huỷ</button>
+<div class="music-popup" id="musicPopup">
+    <div style="font-family:'Great Vibes',cursive;font-size:28px;">
+        Phát nhạc nền?
     </div>
+    <button onclick="playMusic()">OK</button>
+    <button onclick="closePopup()">Huỷ</button>
 </div>
 
 <audio id="bgMusic" loop>
@@ -252,40 +244,33 @@ button{
 </audio>
 
 <script>
-
-/* Sakura VIP */
+/* Sakura */
 function createSakura(){
-    const sakura=document.createElement("div");
-    sakura.classList.add("sakura");
-    sakura.style.left=Math.random()*100+"vw";
-    sakura.style.animationDuration=8+Math.random()*8+"s";
-    sakura.style.opacity=0.7+Math.random()*0.3;
-    document.body.appendChild(sakura);
-    setTimeout(()=>sakura.remove(),16000);
+    const s=document.createElement("div");
+    s.classList.add("sakura");
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDuration=8+Math.random()*8+"s";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),16000);
 }
 setInterval(createSakura,120);
 
-/* Popup music */
-function playMusic(){
-    bgMusic.play();
-    musicPopup.style.display="none";
-}
-function closePopup(){
-    musicPopup.style.display="none";
-}
-
-function toggleMusic(){
-    bgMusic.paused?bgMusic.play():bgMusic.pause();
-}
-
 /* Panel */
 function togglePanel(){
-    panel.style.display=panel.style.display==="block"?"none":"block";
+    const p=document.getElementById("panel");
+    p.style.display=p.style.display==="block"?"none":"block";
 }
 
+/* Update */
 function updateCard(){
-    if(inputHost.value) hostName.innerText=inputHost.value;
-    if(inputGuest.value) guestName.innerText=inputGuest.value;
+    const host=document.getElementById("hostName");
+    const guest=document.getElementById("guestName");
+    const location=document.getElementById("location");
+    const time=document.getElementById("time");
+    const date=document.getElementById("date");
+
+    if(inputHost.value) host.innerText=inputHost.value;
+    if(inputGuest.value) guest.innerText=inputGuest.value;
     if(inputLocation.value) location.innerText=inputLocation.value;
 
     if(inputDate.value){
@@ -301,30 +286,34 @@ function updateCard(){
     }
 }
 
-/* Export clean */
-function saveCard(){
-    controls.classList.add("hide-on-export");
-    panel.classList.add("hide-on-export");
-    creator.classList.add("hide-on-export");
-    musicPopup.classList.add("hide-on-export");
-
-    html2canvas(document.body,{
-        scale:3,
-        useCORS:true,
-        backgroundColor:null
-    }).then(canvas=>{
-        const link=document.createElement("a");
-        link.download="graduation-super-vip.png";
-        link.href=canvas.toDataURL("image/png");
-        link.click();
-
-        controls.classList.remove("hide-on-export");
-        panel.classList.remove("hide-on-export");
-        creator.classList.remove("hide-on-export");
-        musicPopup.classList.remove("hide-on-export");
-    });
+/* Music */
+function playMusic(){
+    document.getElementById("bgMusic").play();
+    document.getElementById("musicPopup").style.display="none";
+}
+function closePopup(){
+    document.getElementById("musicPopup").style.display="none";
 }
 
+/* Save */
+function saveCard(){
+    document.getElementById("controls").classList.add("hide-on-export");
+    document.getElementById("panel").classList.add("hide-on-export");
+    document.getElementById("creator").classList.add("hide-on-export");
+    document.getElementById("musicPopup").classList.add("hide-on-export");
+
+    html2canvas(document.body,{scale:3,useCORS:true}).then(canvas=>{
+        const link=document.createElement("a");
+        link.download="graduation-vip.png";
+        link.href=canvas.toDataURL();
+        link.click();
+
+        document.getElementById("controls").classList.remove("hide-on-export");
+        document.getElementById("panel").classList.remove("hide-on-export");
+        document.getElementById("creator").classList.remove("hide-on-export");
+        document.getElementById("musicPopup").classList.remove("hide-on-export");
+    });
+}
 </script>
 
 </body>
