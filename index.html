@@ -21,12 +21,12 @@ body{
     background:linear-gradient(to bottom,#87c6ff,#eaf6ff);
 }
 
-/* 🌸 Background */
+/* Background */
 body::before{
     content:"";
     position:fixed;
     inset:0;
-    background:url("https://images.unsplash.com/photo-1506744038136-46273834b3fb") center/cover no-repeat;
+    background:url("https://i.imgur.com/eBDDaaq.jpeg") center/cover no-repeat;
     filter:blur(6px) brightness(1.1);
     z-index:-2;
     transition:0.4s;
@@ -41,7 +41,7 @@ body::after{
     transition:0.4s;
 }
 
-/* ===== Khi xuất ảnh ===== */
+/* Khi xuất ảnh */
 .export-mode body::before{
     filter:blur(2px) brightness(1.15);
 }
@@ -60,12 +60,6 @@ body::after{
     box-shadow:0 30px 80px rgba(0,0,0,0.3);
     text-align:center;
     color:#2f3e63;
-    animation:fadeUp 1.5s ease;
-}
-
-@keyframes fadeUp{
-    from{opacity:0;transform:translateY(50px);}
-    to{opacity:1;transform:translateY(0);}
 }
 
 .invite{
@@ -85,7 +79,6 @@ body::after{
     font-size:52px;
     display:block;
     margin:20px 0;
-    text-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
 .desc{
@@ -103,21 +96,9 @@ body::after{
     margin-top:15px;
 }
 
-#time{
-    font-family:'Libre Baskerville',serif;
-    font-size:20px;
-}
-
-#date{
-    font-family:'Playfair Display',serif;
-    font-size:22px;
-    font-weight:600;
-}
-
-#location{
-    font-family:'Quicksand',sans-serif;
-    font-size:17px;
-}
+#time{font-size:20px;}
+#date{font-size:22px;font-weight:600;}
+#location{font-size:17px;}
 
 .footer{
     margin-top:25px;
@@ -164,21 +145,21 @@ button{
     border:1px solid #ccc;
 }
 
-/* Popup Bubble */
+/* Popup bong bóng */
 .popup{
     position:fixed;
-    top:50%;
+    bottom:40px;
     left:50%;
-    transform:translate(-50%,-50%) scale(0);
+    transform:translateX(-50%) scale(0);
     background:white;
-    padding:25px 35px;
-    border-radius:50px;
+    padding:20px 30px;
+    border-radius:40px;
     box-shadow:0 20px 60px rgba(0,0,0,0.3);
     font-family:'Great Vibes',cursive;
-    font-size:26px;
+    font-size:24px;
     text-align:center;
     z-index:999;
-    animation:bubbleIn 0.5s forwards;
+    animation:bubbleIn 0.4s forwards;
 }
 
 .popup::after{
@@ -193,9 +174,7 @@ button{
 }
 
 @keyframes bubbleIn{
-    0%{transform:translate(-50%,-50%) scale(0);}
-    60%{transform:translate(-50%,-50%) scale(1.1);}
-    100%{transform:translate(-50%,-50%) scale(1);}
+    to{transform:translateX(-50%) scale(1);}
 }
 
 .hide-on-export{
@@ -244,32 +223,49 @@ button{
 </div>
 
 <script>
+
+/* Lấy element chuẩn */
+const hostName = document.getElementById("hostName");
+const guestName = document.getElementById("guestName");
+const locationEl = document.getElementById("location");
+const timeEl = document.getElementById("time");
+const dateEl = document.getElementById("date");
+const controls = document.getElementById("controls");
+const panel = document.getElementById("panel");
+
 function togglePanel(){
-    const p=document.getElementById("panel");
-    p.style.display=p.style.display==="block"?"none":"block";
+    panel.style.display = panel.style.display==="block" ? "none" : "block";
 }
 
 function updateCard(){
-    if(inputHost.value) hostName.innerText=inputHost.value;
-    if(inputGuest.value) guestName.innerText=inputGuest.value;
-    if(inputLocation.value) location.innerText=inputLocation.value;
+    const inputHost = document.getElementById("inputHost").value;
+    const inputGuest = document.getElementById("inputGuest").value;
+    const inputLocation = document.getElementById("inputLocation").value;
+    const inputDate = document.getElementById("inputDate").value;
+    const inputTime = document.getElementById("inputTime").value;
 
-    if(inputDate.value){
-        const d=new Date(inputDate.value);
-        date.innerText=d.toLocaleDateString('vi-VN');
+    if(inputHost) hostName.innerText = inputHost;
+    if(inputGuest) guestName.innerText = inputGuest;
+    if(inputLocation) locationEl.innerText = inputLocation;
+
+    if(inputDate){
+        const d = new Date(inputDate);
+        dateEl.innerText = d.toLocaleDateString('vi-VN');
     }
 
-    if(inputTime.value){
-        let [h,m]=inputTime.value.split(":");
+    if(inputTime){
+        let [h,m]=inputTime.split(":");
         let suffix=h>=12?"PM":"AM";
         h=h%12||12;
-        time.innerText=h+":"+m+" "+suffix;
+        timeEl.innerText=h+":"+m+" "+suffix;
     }
 
     panel.style.display="none";
 }
 
 function saveCard(){
+
+    showMusicPopup(); // Hiện popup trước (để tránh iPhone chặn)
 
     controls.classList.add("hide-on-export");
     panel.classList.add("hide-on-export");
@@ -285,18 +281,18 @@ function saveCard(){
             document.documentElement.classList.remove("export-mode");
             controls.classList.remove("hide-on-export");
             panel.classList.remove("hide-on-export");
-
-            showMusicPopup();
         });
-    },200);
+    },300);
 }
 
 function showMusicPopup(){
+    if(document.querySelector(".popup")) return;
+
     const popup=document.createElement("div");
     popup.className="popup";
     popup.innerHTML=`
-        🎵 Bạn có muốn phát nhạc nền không?<br><br>
-        <button onclick="playMusic()">Phát nhạc</button>
+        🎵 Phát nhạc nền không?<br><br>
+        <button onclick="playMusic()">Phát</button>
         <button onclick="closePopup()">Không</button>
     `;
     document.body.appendChild(popup);
@@ -310,6 +306,7 @@ function playMusic(){
 function closePopup(){
     document.querySelector(".popup")?.remove();
 }
+
 </script>
 
 </body>
