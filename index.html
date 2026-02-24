@@ -30,7 +30,6 @@ body::before{
     filter:blur(6px) brightness(1.1);
     z-index:-2;
 }
-
 body::after{
     content:"";
     position:fixed;
@@ -39,26 +38,21 @@ body::after{
     z-index:-1;
 }
 
-/* Sakura layer */
+/* Sakura */
 #sakura-container{
     position:fixed;
     inset:0;
     pointer-events:none;
     z-index:999;
-    overflow:hidden;
 }
-
 .sakura{
     position:absolute;
     top:-50px;
     animation:fall linear forwards;
-    opacity:0.95;
 }
-
 @keyframes fall{
-    0%{transform:translateY(0) translateX(0) rotate(0deg);}
-    50%{transform:translateY(50vh) translateX(60px) rotate(180deg);}
-    100%{transform:translateY(110vh) translateX(-60px) rotate(360deg);}
+    0%{transform:translateY(0) translateX(0);}
+    100%{transform:translateY(110vh) translateX(60px);}
 }
 
 /* Card */
@@ -74,7 +68,6 @@ body::after{
     position:relative;
     z-index:1;
 }
-
 .invite{font-family:'Great Vibes';font-size:36px;}
 .title{font-family:'Playfair Display';font-size:50px;font-weight:700;margin-bottom:20px;}
 #guestName{font-family:'Great Vibes';font-size:52px;margin:20px 0;display:block;}
@@ -93,7 +86,6 @@ body::after{
     gap:10px;
     z-index:1000;
 }
-
 button{
     padding:10px 18px;
     border:none;
@@ -102,7 +94,6 @@ button{
     background:#2f3e63;
     color:white;
 }
-
 .panel{
     position:fixed;
     right:20px;
@@ -115,7 +106,6 @@ button{
     display:none;
     z-index:1000;
 }
-
 .panel input{
     width:100%;
     margin-bottom:10px;
@@ -123,8 +113,7 @@ button{
     border-radius:10px;
     border:1px solid #ccc;
 }
-
-.hide-on-export{display:none !important;}
+.hide-on-export{display:none!important;}
 
 /* Popup */
 .overlay{
@@ -137,36 +126,17 @@ button{
     align-items:center;
     z-index:9999;
 }
-
 .popup{
     background:white;
     padding:40px 50px;
     border-radius:45px;
     text-align:center;
     box-shadow:0 25px 70px rgba(0,0,0,0.4);
-    animation:popupFloat 0.5s ease;
 }
-
 .popup h2{
     font-family:'Playfair Display';
-    font-size:26px;
+    font-size:24px;
     margin-bottom:15px;
-}
-
-.download-popup .icon{
-    font-size:55px;
-    margin-bottom:15px;
-    animation:bounce 1.2s infinite;
-}
-
-@keyframes popupFloat{
-    from{transform:scale(0.6);opacity:0;}
-    to{transform:scale(1);opacity:1;}
-}
-
-@keyframes bounce{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-8px);}
 }
 </style>
 </head>
@@ -174,17 +144,21 @@ button{
 <body>
 
 <div id="sakura-container"></div>
+<audio id="bgMusic" src="music.mp3" loop></audio>
 
-<audio id="bgMusic" src="music.mp3"></audio>
+<!-- POPUP NHẠC -->
+<div class="overlay" id="musicPopup">
+    <div class="popup">
+        <h2>🎵 Phát nhạc nền không?</h2>
+        <button onclick="startMusic()">Phát nhạc</button>
+    </div>
+</div>
 
 <div class="card" id="card">
     <div class="invite">You're Invited</div>
     <div class="title">GRADUATION</div>
     <span id="guestName">Bạn</span>
-    <div class="desc">
-        Đây là ngày mình muốn lưu trữ những khoảnh khắc đẹp nhất của thời thanh xuân.
-        Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của bạn
-    </div>
+    <div class="desc">Đây là ngày mình muốn lưu giữ những khoảnh khắc đẹp nhất.</div>
 
     <div class="section-title">THỜI GIAN</div>
     <div id="time">10:00 AM</div>
@@ -212,78 +186,73 @@ button{
 
 <script>
 
+/* Nhạc */
+function startMusic(){
+    document.getElementById("bgMusic").play();
+    document.getElementById("musicPopup").remove();
+}
+
+/* Panel */
+function togglePanel(){
+    const panel=document.getElementById("panel");
+    panel.style.display=panel.style.display==="block"?"none":"block";
+}
+
+function updateCard(){
+    const host=document.getElementById("inputHost").value;
+    const guest=document.getElementById("inputGuest").value;
+    const date=document.getElementById("inputDate").value;
+    const time=document.getElementById("inputTime").value;
+    const location=document.getElementById("inputLocation").value;
+
+    if(host) document.getElementById("hostName").innerText=host;
+    if(guest) document.getElementById("guestName").innerText=guest;
+    if(date) document.getElementById("date").innerText=date.split("-").reverse().join(".");
+    if(time) document.getElementById("time").innerText=time;
+    if(location) document.getElementById("location").innerText=location;
+}
+
 /* Sakura */
 function createSakura(){
     const sakura=document.createElement("div");
     sakura.className="sakura";
-    const size=Math.random()*18+14;
-    sakura.style.width=size+"px";
-    sakura.style.height=size+"px";
     sakura.style.left=Math.random()*window.innerWidth+"px";
-    const duration=Math.random()*6+8;
-    sakura.style.animationDuration=duration+"s";
-    sakura.innerHTML=`
-    <svg viewBox="0 0 32 32" width="100%" height="100%">
-        <path fill="#ffb7c5"
-        d="M16 2 C18 8,24 6,22 12 C28 12,26 18,20 18
-           C22 24,16 22,16 28
-           C16 22,10 24,12 18
-           C6 18,4 12,10 12
-           C8 6,14 8,16 2Z"/>
-    </svg>`;
+    sakura.style.animationDuration=(Math.random()*5+8)+"s";
+    sakura.innerHTML="🌸";
     document.getElementById("sakura-container").appendChild(sakura);
-    setTimeout(()=>{sakura.remove();},duration*1000);
+    setTimeout(()=>sakura.remove(),10000);
 }
-setInterval(createSakura,400);
+setInterval(createSakura,500);
 
-/* Lưu ảnh có nền phía sau */
+/* Lưu ảnh */
 function saveCard(){
-
     controls.classList.add("hide-on-export");
     panel.classList.add("hide-on-export");
 
     const card=document.getElementById("card");
-    const oldBackground=card.style.background;
-    const oldBackdrop=card.style.backdropFilter;
+    html2canvas(card,{scale:3,useCORS:true}).then(canvas=>{
+        const link=document.createElement("a");
+        link.download="graduation.png";
+        link.href=canvas.toDataURL();
+        link.click();
 
-    card.style.background=`
-        linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.35)),
-        url("https://i.imgur.com/Vh6vJSt.jpeg") center/cover no-repeat
-    `;
-    card.style.backdropFilter="none";
-
-    setTimeout(()=>{
-        html2canvas(card,{scale:3,useCORS:true}).then(canvas=>{
-            const link=document.createElement("a");
-            link.download="graduation.png";
-            link.href=canvas.toDataURL("image/png");
-            link.click();
-
-            card.style.background=oldBackground;
-            card.style.backdropFilter=oldBackdrop;
-            controls.classList.remove("hide-on-export");
-
-            setTimeout(()=>{showDownloadPopup();},500);
-        });
-    },200);
+        controls.classList.remove("hide-on-export");
+        showDownloadPopup();
+    });
 }
 
 function showDownloadPopup(){
     const overlay=document.createElement("div");
     overlay.className="overlay";
     overlay.innerHTML=`
-        <div class="popup download-popup">
-            <div class="icon">⬇️</div>
-            <h2>Ảnh đã tạo thành công!</h2>
-            <p>Hãy mở mục <b>Tải xuống</b> của trình duyệt để lưu ảnh về máy 🎓</p>
-            <button onclick="closeDownloadPopup()">Tuyệt vời ✨</button>
+        <div class="popup">
+            <h2>Ảnh đã tạo 🎓</h2>
+            <p>Mở mục <b>Tải xuống</b> để lưu ảnh về máy</p>
+            <button onclick="this.closest('.overlay').remove()">OK</button>
         </div>`;
     document.body.appendChild(overlay);
 }
-function closeDownloadPopup(){
-    document.querySelector(".overlay").remove();
-}
-</script>
 
+</script>
 </body>
 </html>
