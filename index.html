@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graduation Invitation Luxury</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -20,7 +20,7 @@ body{
     font-family:'Poppins',sans-serif;
 }
 
-/* Background */
+/* ===== BACKGROUND ===== */
 .background{
     position:fixed;
     inset:0;
@@ -36,65 +36,57 @@ body{
     z-index:-1;
 }
 
-/* Card Luxury */
+/* ===== CARD ===== */
 .card{
     width:460px;
     padding:60px 40px;
     border-radius:45px;
-    background:rgba(255,255,255,0.7);
+    background:rgba(255,255,255,0.75);
     backdrop-filter:blur(30px);
     border:2px solid rgba(255,255,255,0.9);
     box-shadow:0 40px 80px rgba(0,0,0,0.25);
     text-align:center;
     color:#2f3e63;
-    position:relative;
-    animation:fadeUp 1.5s ease;
-}
-
-@keyframes fadeUp{
-    from{opacity:0; transform:translateY(40px);}
-    to{opacity:1; transform:translateY(0);}
 }
 
 .invite{
     font-family:'Great Vibes',cursive;
-    font-size:42px;
+    font-size:44px;
     margin-bottom:10px;
 }
 
 .title{
     font-family:'Playfair Display',serif;
-    font-size:54px;
+    font-size:56px;
     font-weight:700;
     margin-bottom:25px;
     letter-spacing:3px;
 }
 
-.desc{
-    font-size:15px;
-    line-height:1.8;
-    margin-bottom:30px;
-}
-
+.desc{font-size:15px;line-height:1.8;margin-bottom:30px;}
 .section-title{
     font-family:'Playfair Display',serif;
-    font-weight:600;
     margin-top:20px;
     text-decoration:underline;
 }
-
-.info{
-    font-size:18px;
-    margin:4px 0;
-}
-
+.info{font-size:18px;margin:4px 0;}
 .footer{
     margin-top:30px;
     font-family:'Great Vibes',cursive;
     font-size:30px;
 }
 
-/* Controls */
+/* ===== CREDIT (TOP) ===== */
+.creator{
+    position:fixed;
+    top:15px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:13px;
+    opacity:0.7;
+}
+
+/* ===== CONTROLS ===== */
 .controls{
     position:fixed;
     bottom:20px;
@@ -102,36 +94,62 @@ body{
     display:flex;
     gap:10px;
 }
-
 button{
     padding:10px 18px;
     border:none;
     border-radius:30px;
     cursor:pointer;
-    font-weight:500;
     background:#2f3e63;
     color:white;
 }
 
-/* Panel */
-.panel{
+/* ===== POPUP MUSIC ===== */
+.popup-overlay{
     position:fixed;
-    right:20px;
-    bottom:90px;
-    background:white;
-    padding:20px;
-    border-radius:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.25);
-    width:260px;
-    display:none;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+    backdrop-filter:blur(6px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
 }
 
-.panel input{
-    width:100%;
-    margin-bottom:10px;
-    padding:8px;
-    border-radius:10px;
-    border:1px solid #ccc;
+.popup{
+    background:rgba(255,255,255,0.9);
+    padding:35px;
+    border-radius:25px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 30px 60px rgba(0,0,0,0.3);
+    animation:fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn{
+    from{transform:scale(0.8);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+
+.popup h3{
+    font-family:'Playfair Display',serif;
+    margin-bottom:15px;
+}
+
+.popup-buttons{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+}
+
+.popup-buttons button{
+    padding:8px 16px;
+    border-radius:20px;
+}
+
+/* Hide when exporting */
+.hide-on-export{
+    display:none !important;
 }
 
 /* Sakura */
@@ -141,29 +159,12 @@ button{
     width:22px;
     height:22px;
     background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
-    pointer-events:none;
     animation:fall linear forwards;
 }
-
 @keyframes fall{
     0%{transform:translateY(0) translateX(0) rotate(0deg);}
     50%{transform:translateY(50vh) translateX(40px) rotate(360deg);}
     100%{transform:translateY(110vh) translateX(-60px) rotate(720deg);opacity:0;}
-}
-
-/* Creator */
-.creator{
-    position:fixed;
-    bottom:10px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:13px;
-    opacity:0.7;
-}
-
-/* Hide elements when exporting */
-.hide-on-export{
-    display:none !important;
 }
 </style>
 </head>
@@ -173,97 +174,63 @@ button{
 <div class="background"></div>
 <div class="overlay"></div>
 
-<div class="card" id="card">
+<div class="creator" id="creator">Website by HNN</div>
 
+<div class="card" id="card">
     <div class="invite">You're Invited</div>
     <div class="title">GRADUATION</div>
-
     <div class="desc">
         Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của 
         <strong id="guestName">Bạn</strong>.
     </div>
-
     <div class="section-title">THỜI GIAN</div>
     <div class="info" id="time">10:00 AM</div>
     <div class="info" id="date">01.03.2026</div>
-
     <div class="section-title">ĐỊA ĐIỂM</div>
     <div class="info" id="location">Trường THPT Tĩnh Gia 2</div>
-
-    <div class="footer">
-        <span id="hostName">Tên của bạn</span>
-    </div>
-
+    <div class="footer"><span id="hostName">Tên của bạn</span></div>
 </div>
 
 <div class="controls" id="controls">
-    <button onclick="togglePanel()">Chỉnh sửa</button>
     <button onclick="saveCard()">Lưu thiệp</button>
     <button onclick="toggleMusic()">Nhạc</button>
 </div>
 
-<div class="panel" id="panel">
-    <input type="text" id="inputHost" placeholder="Tên chủ thiệp">
-    <input type="text" id="inputGuest" placeholder="Tên người được mời">
-    <input type="date" id="inputDate">
-    <input type="time" id="inputTime">
-    <input type="text" id="inputLocation" placeholder="Địa điểm">
-    <button onclick="updateCard()">Cập nhật</button>
+<!-- Popup -->
+<div class="popup-overlay" id="musicPopup">
+    <div class="popup">
+        <h3>Bạn có muốn phát nhạc nền không?</h3>
+        <div class="popup-buttons">
+            <button onclick="playMusic()">OK</button>
+            <button onclick="closePopup()">Huỷ</button>
+        </div>
+    </div>
 </div>
 
-<div class="creator" id="creator">
-    Website by HNN
-</div>
-
-<audio id="bgMusic" loop autoplay>
+<audio id="bgMusic" loop>
 <source src="music.mp3" type="audio/mp3">
 </audio>
 
 <script>
 
-/* AUTO MUSIC */
-window.addEventListener("load",()=>{
-    const music=document.getElementById("bgMusic");
-    music.play().catch(()=>{});
-    loadDefault();
-});
-
-/* Load defaults */
-function loadDefault(){
-    inputHost.value = hostName.innerText;
-    inputGuest.value = guestName.innerText;
-    inputLocation.value = location.innerText;
-    inputDate.value = "2026-03-01";
-    inputTime.value = "10:00";
+/* Popup control */
+function playMusic(){
+    bgMusic.play();
+    musicPopup.style.display="none";
+}
+function closePopup(){
+    musicPopup.style.display="none";
 }
 
-function togglePanel(){
-    panel.style.display=panel.style.display==="block"?"none":"block";
+function toggleMusic(){
+    bgMusic.paused?bgMusic.play():bgMusic.pause();
 }
 
-function updateCard(){
-    if(inputHost.value) hostName.innerText=inputHost.value;
-    if(inputGuest.value) guestName.innerText=inputGuest.value;
-    if(inputLocation.value) location.innerText=inputLocation.value;
-
-    if(inputDate.value){
-        const d=new Date(inputDate.value);
-        date.innerText=d.toLocaleDateString('vi-VN');
-    }
-
-    if(inputTime.value){
-        let [h,m]=inputTime.value.split(":");
-        let suffix=h>=12?"PM":"AM";
-        h=h%12||12;
-        time.innerText=h+":"+m+" "+suffix;
-    }
-}
-
-/* Export without buttons */
+/* Export clean */
 function saveCard(){
     controls.classList.add("hide-on-export");
-    panel.classList.add("hide-on-export");
     creator.classList.add("hide-on-export");
+    musicPopup.classList.add("hide-on-export");
 
     html2canvas(document.body,{
         scale:3,
@@ -276,8 +243,8 @@ function saveCard(){
         link.click();
 
         controls.classList.remove("hide-on-export");
-        panel.classList.remove("hide-on-export");
         creator.classList.remove("hide-on-export");
+        musicPopup.classList.remove("hide-on-export");
     });
 }
 
@@ -291,10 +258,6 @@ function createSakura(){
     setTimeout(()=>sakura.remove(),16000);
 }
 setInterval(createSakura,140);
-
-function toggleMusic(){
-    bgMusic.paused?bgMusic.play():bgMusic.pause();
-}
 
 </script>
 
