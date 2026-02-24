@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graduation Invitation VIP</title>
+<title>Graduation Invitation</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -17,107 +17,76 @@ body{
     justify-content:center;
     align-items:center;
     overflow:hidden;
-    background:linear-gradient(to bottom,#8fb3d9,#e6f0fa);
     font-family:'Poppins',sans-serif;
 }
 
-/* Background mờ */
-body::before{
-    content:"";
+/* ===== BACKGROUND IMAGE ===== */
+.background{
     position:fixed;
     inset:0;
-    background:url("https://images.unsplash.com/photo-1526045612212-70caf35c14df") center/cover no-repeat;
+    background:url("https://images.unsplash.com/photo-1490750967868-88aa4486c946") center/cover no-repeat;
     filter:blur(8px) brightness(1.1);
     z-index:-2;
 }
-body::after{
-    content:"";
+
+.overlay{
     position:fixed;
     inset:0;
-    background:rgba(255,255,255,0.4);
+    background:rgba(255,255,255,0.45);
     z-index:-1;
 }
 
-/* Card */
+/* ===== CARD ===== */
 .card{
-    width:430px;
-    padding:45px 35px;
-    border-radius:35px;
+    width:440px;
+    padding:50px 35px;
+    border-radius:40px;
+    background:rgba(255,255,255,0.65);
     backdrop-filter:blur(25px);
-    background:rgba(255,255,255,0.35);
-    box-shadow:0 25px 60px rgba(0,0,0,0.25);
+    border:2px solid rgba(255,255,255,0.8);
+    box-shadow:0 30px 60px rgba(0,0,0,0.25);
     text-align:center;
-    color:#2f3e63;
-    animation:fadeUp 1.5s ease;
+    color:#334466;
     position:relative;
 }
 
-@keyframes fadeUp{
-    from{opacity:0; transform:translateY(40px);}
-    to{opacity:1; transform:translateY(0);}
-}
-
 .invite{
-    font-family:'Great Vibes',cursive;
-    font-size:34px;
+    font-size:22px;
     margin-bottom:10px;
+    letter-spacing:1px;
 }
 
 .title{
     font-family:'Playfair Display',serif;
-    font-size:48px;
+    font-size:52px;
     font-weight:700;
-    margin-bottom:20px;
-    letter-spacing:2px;
+    margin-bottom:25px;
 }
 
-.desc{font-size:15px;line-height:1.7;margin-bottom:20px;}
-.section-title{margin-top:18px;font-weight:600;}
-.info{font-size:17px;margin:6px 0;}
+.desc{
+    font-size:15px;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.section-title{
+    font-weight:600;
+    margin-top:20px;
+    margin-bottom:8px;
+    text-decoration:underline;
+}
+
+.info{
+    font-size:18px;
+    margin:4px 0;
+}
 
 .footer{
-    margin-top:25px;
-    font-family:'Great Vibes',cursive;
-    font-size:26px;
+    margin-top:30px;
+    font-style:italic;
 }
 
-/* Shine effect */
-.card::before{
-    content:"";
-    position:absolute;
-    top:-50%;
-    left:-50%;
-    width:200%;
-    height:200%;
-    background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,0.4),transparent 70%);
-    transform:rotate(25deg);
-    animation:shine 6s infinite linear;
-}
-
-@keyframes shine{
-    from{transform:translateX(-100%) rotate(25deg);}
-    to{transform:translateX(100%) rotate(25deg);}
-}
-
-/* Sakura */
-.sakura{
-    position:fixed;
-    top:-20px;
-    width:18px;
-    height:18px;
-    background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
-    animation:fall linear infinite;
-    opacity:0.8;
-}
-
-@keyframes fall{
-    to{
-        transform:translateY(110vh) rotate(720deg);
-        opacity:0;
-    }
-}
-
-/* Buttons */
+/* ===== BUTTONS ===== */
 .controls{
     position:fixed;
     bottom:20px;
@@ -132,168 +101,109 @@ button{
     border-radius:25px;
     cursor:pointer;
     font-weight:500;
-    background:#2f3e63;
+    background:#334466;
     color:white;
     box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
-/* Panel */
-.panel{
+/* ===== SAKURA VIP ===== */
+.sakura{
     position:fixed;
-    right:20px;
-    bottom:90px;
-    background:white;
-    padding:20px;
-    border-radius:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.25);
-    width:260px;
-    display:none;
+    top:-30px;
+    width:22px;
+    height:22px;
+    background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
+    pointer-events:none;
+    animation:fall linear forwards;
 }
 
-.panel input{
-    width:100%;
-    margin-bottom:10px;
-    padding:8px;
-    border-radius:10px;
-    border:1px solid #ccc;
-}
-
-/* Toast */
-.toast{
-    position:fixed;
-    bottom:30px;
-    left:50%;
-    transform:translateX(-50%) translateY(100px);
-    background:rgba(47,62,99,0.95);
-    color:white;
-    padding:14px 25px;
-    border-radius:30px;
-    font-size:14px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    opacity:0;
-    transition:all 0.5s ease;
-    z-index:999;
-}
-
-.toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
-}
-
-@media(max-width:500px){
-    .card{width:90%;}
+@keyframes fall{
+    0%{transform:translateY(0) translateX(0) rotate(0deg);}
+    50%{transform:translateY(50vh) translateX(40px) rotate(360deg);}
+    100%{transform:translateY(110vh) translateX(-60px) rotate(720deg);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
-<div class="card" id="card">
-    <div class="invite">You're Invited</div>
+<div class="background"></div>
+<div class="overlay"></div>
+
+<div class="card" id="capture">
+    <div class="invite">Invitation</div>
     <div class="title">GRADUATION</div>
 
     <div class="desc">
-        Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của 
-        <strong id="guestName">Bạn</strong>.
+        Đây là ngày mình muốn lưu trữ những khoảnh khắc đẹp nhất của thời thanh xuân.
+        Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của bạn.
     </div>
 
     <div class="section-title">THỜI GIAN</div>
-    <div class="info" id="time">9:30 AM</div>
-    <div class="info" id="date">01/03/2026</div>
+    <div class="info">10:00 AM</div>
+    <div class="info">01.03.2026</div>
 
     <div class="section-title">ĐỊA ĐIỂM</div>
-    <div class="info" id="location">Trường THPT TG2</div>
+    <div class="info">Trường THPT Tĩnh Gia 2</div>
 
     <div class="footer">
-        <span id="hostName">Tên Chủ Thiệp</span>
+        Trân trọng,
     </div>
 </div>
 
 <div class="controls">
-    <button onclick="togglePanel()">Chỉnh sửa</button>
     <button onclick="saveCard()">Lưu thiệp</button>
     <button onclick="toggleMusic()">Nhạc</button>
 </div>
 
-<div class="panel" id="panel">
-    <input type="text" id="inputHost" placeholder="Tên chủ thiệp">
-    <input type="text" id="inputGuest" placeholder="Tên người mời">
-    <input type="date" id="inputDate">
-    <input type="time" id="inputTime">
-    <input type="text" id="inputLocation" placeholder="Địa điểm">
-    <button onclick="updateCard()">Cập nhật</button>
-</div>
-
-<div id="toast" class="toast">
-📥 Mở tệp tải xuống của trình duyệt để lưu ảnh về máy
-</div>
-
-<audio id="bgMusic" loop>
-<source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+<audio id="bgMusic" loop autoplay>
+<source src="music.mp3" type="audio/mp3">
 </audio>
 
 <script>
-/* Sakura */
+
+/* ===== AUTO MUSIC ===== */
+window.addEventListener("load",()=>{
+    const music=document.getElementById("bgMusic");
+    const playPromise=music.play();
+    if(playPromise!==undefined){
+        playPromise.catch(()=>{
+            document.body.addEventListener("click",()=>music.play(),{once:true});
+        });
+    }
+});
+
+/* ===== SAKURA ===== */
 function createSakura(){
     const sakura=document.createElement("div");
     sakura.classList.add("sakura");
     sakura.style.left=Math.random()*100+"vw";
-    sakura.style.animationDuration=6+Math.random()*6+"s";
-    sakura.style.opacity=Math.random();
+    sakura.style.animationDuration=8+Math.random()*8+"s";
+    sakura.style.opacity=0.7+Math.random()*0.3;
     document.body.appendChild(sakura);
-    setTimeout(()=>sakura.remove(),12000);
+    setTimeout(()=>sakura.remove(),16000);
 }
-setInterval(createSakura,250);
+setInterval(createSakura,150);
 
-/* Panel */
-function togglePanel(){
-    const p=document.getElementById("panel");
-    p.style.display=p.style.display==="block"?"none":"block";
-}
-
-function updateCard(){
-    if(inputHost.value) hostName.innerText=inputHost.value;
-    if(inputGuest.value) guestName.innerText=inputGuest.value;
-    if(inputLocation.value) location.innerText=inputLocation.value;
-
-    if(inputDate.value){
-        const d=new Date(inputDate.value);
-        document.getElementById("date").innerText=d.toLocaleDateString('vi-VN');
-    }
-
-    if(inputTime.value){
-        let [h,m]=inputTime.value.split(":");
-        let suffix=h>=12?"PM":"AM";
-        h=h%12||12;
-        document.getElementById("time").innerText=h+":"+m+" "+suffix;
-    }
-}
-
-/* Lưu thiệp */
+/* ===== SAVE FULL DESIGN ===== */
 function saveCard(){
-    html2canvas(document.getElementById("card"),{
+    html2canvas(document.body,{
         scale:3,
-        useCORS:true
+        useCORS:true,
+        backgroundColor:null
     }).then(canvas=>{
         const link=document.createElement("a");
-        link.download="thiep-ky-yeu.png";
+        link.download="graduation-invitation.png";
         link.href=canvas.toDataURL("image/png");
         link.click();
-        showToast();
     });
 }
 
-function showToast(){
-    const toast=document.getElementById("toast");
-    toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"),4000);
-}
-
-/* Nhạc */
 function toggleMusic(){
     const music=document.getElementById("bgMusic");
     music.paused?music.play():music.pause();
 }
+
 </script>
 
 </body>
