@@ -1,169 +1,300 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiệp Kỉ Yếu - Căn Chỉnh Chuẩn</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-    <style>
-        :root { --gold: #e5b869; --dark: #3a3a3a; --bg-color: #fffaf0; }
-        body { margin: 0; background-color: var(--bg-color); display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: 'Montserrat', sans-serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graduation Invitation VIP</title>
 
-        /* Bảng điều khiển */
-        #control-panel { background: white; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; flex-wrap: wrap; gap: 10px; width: 100%; justify-content: center; position: sticky; top: 0; }
-        .input-group { display: flex; flex-direction: column; gap: 2px; }
-        .input-group label { font-size: 10px; font-weight: 700; color: var(--gold); }
-        .input-group input { padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; }
-        .btn-save { background: #d4a75a; color: white; border: none; padding: 10px 25px; border-radius: 4px; font-weight: 700; cursor: pointer; align-self: flex-end; }
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
-        /* Vùng thiệp */
-        #capture-area { padding: 40px; }
-        .invitation-card {
-            background-color: white; width: 850px; height: 550px; display: flex;
-            position: relative; 
-            padding: 40px; 
-            box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-            border: 1px solid #eee;
-            overflow: hidden; /* Đảm bảo không bị tràn khi lưu */
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        /* CHIẾC MŨ: Đã căn chỉnh chính xác trên thanh chia */
-        .grad-cap-fix {
-            position: absolute;
-            top: 20px; /* Khoảng cách từ trên xuống */
-            left: 50%; /* Đưa tâm vào giữa thiệp */
-            transform: translateX(-50%); /* Dịch ngược lại 50% chiều rộng mũ để tâm mũ trùng tâm thiệp */
-            width: 180px; /* To hơn nữa theo yêu cầu */
-            height: 120px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 32L32 128l224 96 224-96L256 32z' fill='%23333'/%3E%3Cpath d='M416 172.8V320c0 35.3-71.6 64-160 64s-160-28.7-160-64V172.8l160 68.6 160-68.6z' fill='%23444'/%3E%3Cpath d='M448 128v192h-32V128h32z' fill='%23e5b869'/%3E%3C/svg%3E");
-            background-size: contain;
-            background-repeat: no-repeat;
-            z-index: 20;
-        }
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:linear-gradient(to bottom,#8fb3d9,#e6f0fa);
+    font-family:'Poppins',sans-serif;
+}
 
-        .left-side, .right-side { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5; }
-        
-        /* Thanh chia trung tâm */
-        .divider { 
-            width: 1px; 
-            background: #eee; 
-            height: 70%; 
-            margin: 0; /* Bỏ margin để không làm lệch tâm */
-            position: relative;
-        }
+/* Background mờ */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:url("https://images.unsplash.com/photo-1526045612212-70caf35c14df") center/cover no-repeat;
+    filter:blur(8px) brightness(1.1);
+    z-index:-2;
+}
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(255,255,255,0.4);
+    z-index:-1;
+}
 
-        .text-thu-moi { font-family: 'Great Vibes', cursive; font-size: 70px; margin: 0; }
-        .text-ki-yeu { font-family: 'Playfair Display', serif; font-size: 55px; color: var(--gold); letter-spacing: 4px; margin: 0; }
-        .owner-name { font-family: 'Great Vibes', cursive; font-size: 35px; color: var(--dark); margin: 5px 0; }
-        .title-main { font-family: 'Playfair Display', serif; font-size: 26px; border-bottom: 2px solid var(--gold); padding-bottom: 5px; margin-bottom: 20px; }
-        .date-box { display: flex; align-items: center; gap: 12px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 8px 20px; margin-bottom: 15px; }
-        .big-day { font-size: 35px; color: var(--gold); font-family: 'Playfair Display', serif; }
-        .date-info-stack { display: flex; flex-direction: column; font-size: 11px; text-align: left; line-height: 1.2; font-weight: 600; }
-        
-        #notification { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000; }
-    </style>
+/* Card */
+.card{
+    width:430px;
+    padding:45px 35px;
+    border-radius:35px;
+    backdrop-filter:blur(25px);
+    background:rgba(255,255,255,0.35);
+    box-shadow:0 25px 60px rgba(0,0,0,0.25);
+    text-align:center;
+    color:#2f3e63;
+    animation:fadeUp 1.5s ease;
+    position:relative;
+}
+
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.invite{
+    font-family:'Great Vibes',cursive;
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.title{
+    font-family:'Playfair Display',serif;
+    font-size:48px;
+    font-weight:700;
+    margin-bottom:20px;
+    letter-spacing:2px;
+}
+
+.desc{font-size:15px;line-height:1.7;margin-bottom:20px;}
+.section-title{margin-top:18px;font-weight:600;}
+.info{font-size:17px;margin:6px 0;}
+
+.footer{
+    margin-top:25px;
+    font-family:'Great Vibes',cursive;
+    font-size:26px;
+}
+
+/* Shine effect */
+.card::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,0.4),transparent 70%);
+    transform:rotate(25deg);
+    animation:shine 6s infinite linear;
+}
+
+@keyframes shine{
+    from{transform:translateX(-100%) rotate(25deg);}
+    to{transform:translateX(100%) rotate(25deg);}
+}
+
+/* Sakura */
+.sakura{
+    position:fixed;
+    top:-20px;
+    width:18px;
+    height:18px;
+    background:url("https://cdn-icons-png.flaticon.com/512/766/766732.png") no-repeat center/cover;
+    animation:fall linear infinite;
+    opacity:0.8;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(720deg);
+        opacity:0;
+    }
+}
+
+/* Buttons */
+.controls{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    display:flex;
+    gap:10px;
+}
+
+button{
+    padding:10px 16px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    font-weight:500;
+    background:#2f3e63;
+    color:white;
+    box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Panel */
+.panel{
+    position:fixed;
+    right:20px;
+    bottom:90px;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    width:260px;
+    display:none;
+}
+
+.panel input{
+    width:100%;
+    margin-bottom:10px;
+    padding:8px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+/* Toast */
+.toast{
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:rgba(47,62,99,0.95);
+    color:white;
+    padding:14px 25px;
+    border-radius:30px;
+    font-size:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    opacity:0;
+    transition:all 0.5s ease;
+    z-index:999;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:500px){
+    .card{width:90%;}
+}
+</style>
 </head>
+
 <body>
 
-    <div id="control-panel">
-        <div class="input-group"><label>Bạn thân</label><input type="text" id="in-name" placeholder="Tên..." oninput="sync()"></div>
-        <div class="input-group"><label>Tên bạn</label><input type="text" id="in-owner" placeholder="Bạn..." oninput="sync()"></div>
-        <div class="input-group"><label>Ngày lễ</label><input type="date" id="in-date" value="2026-03-01" oninput="sync()"></div>
-        <div class="input-group"><label>Giờ</label><input type="time" id="in-time" value="09:30" oninput="sync()"></div>
-        <div class="input-group"><label>Lớp</label><input type="text" id="in-class" value="12A4" oninput="sync()"></div>
-        <div class="input-group"><label>Địa điểm</label><input type="text" id="in-loc" value="Trường THPT TG2" oninput="sync()"></div>
-        <button class="btn-save" onclick="saveImage()">LƯU THIỆP</button>
+<div class="card" id="card">
+    <div class="invite">You're Invited</div>
+    <div class="title">GRADUATION</div>
+
+    <div class="desc">
+        Thật hạnh phúc khi những bức ảnh thanh xuân của mình có sự góp mặt của 
+        <strong id="guestName">Bạn</strong>.
     </div>
 
-    <div id="capture-area">
-        <div class="invitation-card" id="my-card">
-            <div class="grad-cap-fix"></div>
+    <div class="section-title">THỜI GIAN</div>
+    <div class="info" id="time">9:30 AM</div>
+    <div class="info" id="date">01/03/2026</div>
 
-            <div class="left-side">
-                <h1 class="text-thu-moi">Thu mời</h1>
-                <h2 class="text-ki-yeu">KỈ YẾU</h2>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span style="font-size: 10px; color: #999;">FROM</span>
-                    <p class="owner-name" id="out-owner">Your Name</p>
-                </div>
-            </div>
+    <div class="section-title">ĐỊA ĐIỂM</div>
+    <div class="info" id="location">Trường THPT TG2</div>
 
-            <div class="divider"></div>
-
-            <div class="right-side">
-                <div class="title-main">INVITATION</div>
-                <div style="font-size: 14px; text-align: center; line-height: 1.6;">
-                    Thân mời: <span id="out-name" style="font-weight: 700; color: #b38b4d;">Bạn của tớ</span><br>
-                    Đến dự kỉ yếu cùng tớ nhé!
-                </div>
-                <div style="font-family: 'Great Vibes', cursive; font-size: 40px; color: var(--gold); margin: 10px 0;" id="out-class">Class of 12A4</div>
-                
-                <div class="date-box">
-                    <div class="date-info-stack">
-                        <span id="out-month">THÁNG 03</span>
-                        <span id="out-year">NĂM 2026</span>
-                    </div>
-                    <span class="big-day" id="out-day">01</span>
-                    <div class="date-info-stack">
-                        <span style="color:var(--gold)">VÀO LÚC</span>
-                        <span id="out-time-display" style="font-size: 16px;">09:30 AM</span>
-                    </div>
-                </div>
-                <div style="font-size: 12px; font-weight: 700;" id="out-loc">Trường THPT TG2</div>
-            </div>
-        </div>
+    <div class="footer">
+        <span id="hostName">Tên Chủ Thiệp</span>
     </div>
+</div>
 
-    <div id="notification">✓ Đã tải xuống thiệp!</div>
+<div class="controls">
+    <button onclick="togglePanel()">Chỉnh sửa</button>
+    <button onclick="saveCard()">Lưu thiệp</button>
+    <button onclick="toggleMusic()">Nhạc</button>
+</div>
 
-    <script>
-        function formatTime(timeStr) {
-            if(!timeStr) return "09:30 AM";
-            let [h, m] = timeStr.split(':');
-            let ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12 || 12;
-            return `${String(h).padStart(2, '0')}:${m} ${ampm}`;
-        }
+<div class="panel" id="panel">
+    <input type="text" id="inputHost" placeholder="Tên chủ thiệp">
+    <input type="text" id="inputGuest" placeholder="Tên người mời">
+    <input type="date" id="inputDate">
+    <input type="time" id="inputTime">
+    <input type="text" id="inputLocation" placeholder="Địa điểm">
+    <button onclick="updateCard()">Cập nhật</button>
+</div>
 
-        function sync() {
-            document.getElementById('out-name').innerText = document.getElementById('in-name').value || "Bạn của tớ";
-            document.getElementById('out-owner').innerText = document.getElementById('in-owner').value || "Your Name";
-            document.getElementById('out-class').innerText = "Class of " + (document.getElementById('in-class').value || "12A4");
-            document.getElementById('out-loc').innerText = document.getElementById('in-loc').value || "Trường THPT TG2";
-            document.getElementById('out-time-display').innerText = formatTime(document.getElementById('in-time').value);
-            
-            const d = new Date(document.getElementById('in-date').value);
-            if(!isNaN(d)) {
-                document.getElementById('out-day').innerText = String(d.getDate()).padStart(2, '0');
-                document.getElementById('out-month').innerText = "THÁNG " + String(d.getMonth() + 1).padStart(2, '0');
-                document.getElementById('out-year').innerText = "NĂM " + d.getFullYear();
-            }
-        }
+<div id="toast" class="toast">
+📥 Mở tệp tải xuống của trình duyệt để lưu ảnh về máy
+</div>
 
-        function saveImage() {
-            const card = document.getElementById('my-card');
-            const toast = document.getElementById('notification');
-            
-            // Chụp hình
-            html2canvas(card, { 
-                scale: 3, 
-                useCORS: true,
-                backgroundColor: "#ffffff"
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'thiep-ki-yeu.png';
-                link.href = canvas.toURL ? canvas.toDataURL("image/png") : canvas.toDataURL();
-                link.click();
-                toast.style.display = 'block';
-                setTimeout(() => toast.style.display = 'none', 3000);
-            });
-        }
-        sync();
-    </script>
+<audio id="bgMusic" loop>
+<source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+</audio>
+
+<script>
+/* Sakura */
+function createSakura(){
+    const sakura=document.createElement("div");
+    sakura.classList.add("sakura");
+    sakura.style.left=Math.random()*100+"vw";
+    sakura.style.animationDuration=6+Math.random()*6+"s";
+    sakura.style.opacity=Math.random();
+    document.body.appendChild(sakura);
+    setTimeout(()=>sakura.remove(),12000);
+}
+setInterval(createSakura,250);
+
+/* Panel */
+function togglePanel(){
+    const p=document.getElementById("panel");
+    p.style.display=p.style.display==="block"?"none":"block";
+}
+
+function updateCard(){
+    if(inputHost.value) hostName.innerText=inputHost.value;
+    if(inputGuest.value) guestName.innerText=inputGuest.value;
+    if(inputLocation.value) location.innerText=inputLocation.value;
+
+    if(inputDate.value){
+        const d=new Date(inputDate.value);
+        document.getElementById("date").innerText=d.toLocaleDateString('vi-VN');
+    }
+
+    if(inputTime.value){
+        let [h,m]=inputTime.value.split(":");
+        let suffix=h>=12?"PM":"AM";
+        h=h%12||12;
+        document.getElementById("time").innerText=h+":"+m+" "+suffix;
+    }
+}
+
+/* Lưu thiệp */
+function saveCard(){
+    html2canvas(document.getElementById("card"),{
+        scale:3,
+        useCORS:true
+    }).then(canvas=>{
+        const link=document.createElement("a");
+        link.download="thiep-ky-yeu.png";
+        link.href=canvas.toDataURL("image/png");
+        link.click();
+        showToast();
+    });
+}
+
+function showToast(){
+    const toast=document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"),4000);
+}
+
+/* Nhạc */
+function toggleMusic(){
+    const music=document.getElementById("bgMusic");
+    music.paused?music.play():music.pause();
+}
+</script>
+
 </body>
 </html>
