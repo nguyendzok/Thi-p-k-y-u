@@ -39,7 +39,7 @@ body::after{
     z-index:-1;
 }
 
-/* 🌸 Sakura top layer */
+/* Sakura layer */
 #sakura-container{
     position:fixed;
     inset:0;
@@ -82,11 +82,9 @@ body::after{
 #time{font-family:'Libre Baskerville';font-size:20px;}
 #date{font-family:'Playfair Display';font-size:24px;font-weight:600;margin-top:5px;}
 #location{font-family:'Quicksand';font-size:18px;font-weight:500;margin-top:5px;}
-
 .section-title{font-size:13px;letter-spacing:3px;margin-top:18px;}
 .footer{margin-top:25px;font-family:'Great Vibes';font-size:28px;}
 
-/* Controls */
 .controls{
     position:fixed;
     bottom:20px;
@@ -105,7 +103,6 @@ button{
     color:white;
 }
 
-/* Panel */
 .panel{
     position:fixed;
     right:20px;
@@ -127,9 +124,7 @@ button{
     border:1px solid #ccc;
 }
 
-.hide-on-export{
-    display:none !important;
-}
+.hide-on-export{display:none !important;}
 
 /* Popup */
 .overlay{
@@ -154,7 +149,7 @@ button{
 
 .popup h2{
     font-family:'Playfair Display';
-    font-size:28px;
+    font-size:26px;
     margin-bottom:15px;
 }
 
@@ -217,7 +212,7 @@ button{
 
 <script>
 
-/* 🌸 Sakura */
+/* Sakura */
 function createSakura(){
     const sakura=document.createElement("div");
     sakura.className="sakura";
@@ -241,58 +236,31 @@ function createSakura(){
 }
 setInterval(createSakura,400);
 
-/* Popup nhạc */
-window.onload=function(){showMusicPopup();};
-function showMusicPopup(){
-    const overlay=document.createElement("div");
-    overlay.className="overlay";
-    overlay.innerHTML=`
-        <div class="popup">
-            <h2>🎵 Bật nhạc nền?</h2>
-            <p>Bạn có muốn phát nhạc cho thiệp không?</p>
-            <button onclick="playMusic()">Phát nhạc</button>
-            <button onclick="closePopup()">Không</button>
-        </div>`;
-    document.body.appendChild(overlay);
-}
-function playMusic(){document.getElementById("bgMusic").play();closePopup();}
-function closePopup(){document.querySelector(".overlay").remove();}
-
-/* Chỉnh sửa */
-function togglePanel(){panel.style.display=panel.style.display==="block"?"none":"block";}
-function updateCard(){
-    if(inputHost.value) hostName.innerText=inputHost.value;
-    if(inputGuest.value) guestName.innerText=inputGuest.value;
-    if(inputLocation.value) location.innerText=inputLocation.value;
-    if(inputDate.value){
-        const d=new Date(inputDate.value);
-        date.innerText=d.toLocaleDateString('vi-VN');
-    }
-    if(inputTime.value){
-        let[h,m]=inputTime.value.split(":");
-        let suffix=h>=12?"PM":"AM";
-        h=h%12||12;
-        time.innerText=h+":"+m+" "+suffix;
-    }
-    panel.style.display="none";
-}
-
-/* Lưu ảnh + popup xịn */
+/* Lưu ảnh có nền phía sau */
 function saveCard(){
+
     controls.classList.add("hide-on-export");
     panel.classList.add("hide-on-export");
 
+    const card=document.getElementById("card");
+    const oldBackground=card.style.background;
+    const oldBackdrop=card.style.backdropFilter;
+
+    card.style.background=`
+        linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.35)),
+        url("https://i.imgur.com/Vh6vJSt.jpeg") center/cover no-repeat
+    `;
+    card.style.backdropFilter="none";
+
     setTimeout(()=>{
-        html2canvas(document.getElementById("card"),{
-            scale:3,
-            useCORS:true,
-            backgroundColor:null
-        }).then(canvas=>{
+        html2canvas(card,{scale:3,useCORS:true}).then(canvas=>{
             const link=document.createElement("a");
             link.download="graduation.png";
             link.href=canvas.toDataURL("image/png");
             link.click();
 
+            card.style.background=oldBackground;
+            card.style.backdropFilter=oldBackdrop;
             controls.classList.remove("hide-on-export");
 
             setTimeout(()=>{showDownloadPopup();},500);
@@ -307,10 +275,7 @@ function showDownloadPopup(){
         <div class="popup download-popup">
             <div class="icon">⬇️</div>
             <h2>Ảnh đã tạo thành công!</h2>
-            <p>
-                Hãy mở mục <b>Tải xuống</b> của trình duyệt<br>
-                để lưu ảnh về máy 🎓
-            </p>
+            <p>Hãy mở mục <b>Tải xuống</b> của trình duyệt để lưu ảnh về máy 🎓</p>
             <button onclick="closeDownloadPopup()">Tuyệt vời ✨</button>
         </div>`;
     document.body.appendChild(overlay);
@@ -318,7 +283,7 @@ function showDownloadPopup(){
 function closeDownloadPopup(){
     document.querySelector(".overlay").remove();
 }
-
 </script>
+
 </body>
 </html>
