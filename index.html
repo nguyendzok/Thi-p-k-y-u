@@ -21,7 +21,7 @@ body{
     background:linear-gradient(to bottom,#87c6ff,#eaf6ff);
 }
 
-/* 🌸 Background: Cánh đồng hoa + trời xanh */
+/* 🌸 Background */
 body::before{
     content:"";
     position:fixed;
@@ -29,6 +29,7 @@ body::before{
     background:url("https://images.unsplash.com/photo-1506744038136-46273834b3fb") center/cover no-repeat;
     filter:blur(6px) brightness(1.1);
     z-index:-2;
+    transition:0.4s;
 }
 
 body::after{
@@ -37,9 +38,19 @@ body::after{
     inset:0;
     background:rgba(255,255,255,0.25);
     z-index:-1;
+    transition:0.4s;
 }
 
-/* Card Glass */
+/* ===== Khi xuất ảnh ===== */
+.export-mode body::before{
+    filter:blur(2px) brightness(1.15);
+}
+
+.export-mode body::after{
+    background:rgba(255,255,255,0.15);
+}
+
+/* Card */
 .card{
     width:430px;
     padding:50px 40px;
@@ -77,7 +88,6 @@ body::after{
     text-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
-/* Nội dung mời */
 .desc{
     font-family:'Cormorant Garamond',serif;
     font-size:18px;
@@ -86,7 +96,6 @@ body::after{
     margin-bottom:25px;
 }
 
-/* Section title */
 .section-title{
     font-family:'Quicksand',sans-serif;
     font-size:13px;
@@ -94,20 +103,17 @@ body::after{
     margin-top:15px;
 }
 
-/* Time */
 #time{
     font-family:'Libre Baskerville',serif;
     font-size:20px;
 }
 
-/* Date */
 #date{
     font-family:'Playfair Display',serif;
     font-size:22px;
     font-weight:600;
 }
 
-/* Location */
 #location{
     font-family:'Quicksand',sans-serif;
     font-size:17px;
@@ -165,14 +171,25 @@ button{
     left:50%;
     transform:translate(-50%,-50%) scale(0);
     background:white;
-    padding:30px 40px;
-    border-radius:60px;
+    padding:25px 35px;
+    border-radius:50px;
     box-shadow:0 20px 60px rgba(0,0,0,0.3);
     font-family:'Great Vibes',cursive;
     font-size:26px;
     text-align:center;
     z-index:999;
     animation:bubbleIn 0.5s forwards;
+}
+
+.popup::after{
+    content:"";
+    position:absolute;
+    bottom:-15px;
+    left:50%;
+    transform:translateX(-50%);
+    border-width:15px 15px 0;
+    border-style:solid;
+    border-color:white transparent transparent;
 }
 
 @keyframes bubbleIn{
@@ -188,6 +205,8 @@ button{
 </head>
 
 <body>
+
+<audio id="bgMusic" src="music.mp3"></audio>
 
 <div class="card" id="card">
     <div class="invite">You're Invited</div>
@@ -231,15 +250,8 @@ function togglePanel(){
 }
 
 function updateCard(){
-    const host=document.getElementById("hostName");
-    const guest=document.getElementById("guestName");
-    const location=document.getElementById("location");
-    const time=document.getElementById("time");
-    const date=document.getElementById("date");
-    const panel=document.getElementById("panel");
-
-    if(inputHost.value) host.innerText=inputHost.value;
-    if(inputGuest.value) guest.innerText=inputGuest.value;
+    if(inputHost.value) hostName.innerText=inputHost.value;
+    if(inputGuest.value) guestName.innerText=inputGuest.value;
     if(inputLocation.value) location.innerText=inputLocation.value;
 
     if(inputDate.value){
@@ -259,29 +271,44 @@ function updateCard(){
 
 function saveCard(){
 
-    document.getElementById("controls").classList.add("hide-on-export");
-    document.getElementById("panel").classList.add("hide-on-export");
+    controls.classList.add("hide-on-export");
+    panel.classList.add("hide-on-export");
+    document.documentElement.classList.add("export-mode");
 
-    html2canvas(document.body,{scale:3,useCORS:true}).then(canvas=>{
-        const link=document.createElement("a");
-        link.download="graduation-vip.png";
-        link.href=canvas.toDataURL();
-        link.click();
+    setTimeout(()=>{
+        html2canvas(document.body,{scale:3,useCORS:true}).then(canvas=>{
+            const link=document.createElement("a");
+            link.download="graduation-vip.png";
+            link.href=canvas.toDataURL();
+            link.click();
 
-        document.getElementById("controls").classList.remove("hide-on-export");
-        document.getElementById("panel").classList.remove("hide-on-export");
+            document.documentElement.classList.remove("export-mode");
+            controls.classList.remove("hide-on-export");
+            panel.classList.remove("hide-on-export");
 
-        showPopup();
-    });
+            showMusicPopup();
+        });
+    },200);
 }
 
-function showPopup(){
+function showMusicPopup(){
     const popup=document.createElement("div");
     popup.className="popup";
-    popup.innerHTML="✨ Ảnh đã tạo thành công! <br> Vào mục Tải xuống của trình duyệt để lưu nhé ✨";
+    popup.innerHTML=`
+        🎵 Bạn có muốn phát nhạc nền không?<br><br>
+        <button onclick="playMusic()">Phát nhạc</button>
+        <button onclick="closePopup()">Không</button>
+    `;
     document.body.appendChild(popup);
+}
 
-    setTimeout(()=>popup.remove(),3500);
+function playMusic(){
+    document.getElementById("bgMusic").play();
+    closePopup();
+}
+
+function closePopup(){
+    document.querySelector(".popup")?.remove();
 }
 </script>
 
