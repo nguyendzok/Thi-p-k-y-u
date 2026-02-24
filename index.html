@@ -26,7 +26,7 @@ body::before{
     content:"";
     position:fixed;
     inset:0;
-    background:url("https://i.imgur.com/eBDDaaq.jpeg") center/cover no-repeat;
+    background:url("https://images.unsplash.com/photo-1506744038136-46273834b3fb") center/cover no-repeat;
     filter:blur(6px) brightness(1.1);
     z-index:-2;
 }
@@ -102,7 +102,7 @@ button{
     border:1px solid #ccc;
 }
 
-/* Ẩn khi xuất */
+/* Hide when export */
 .hide-on-export{
     display:none !important;
 }
@@ -165,12 +165,12 @@ button{
     <div class="footer" id="hostName">Tên của bạn</div>
 </div>
 
-<div class="controls hide-on-export" id="controls">
+<div class="controls" id="controls">
     <button onclick="togglePanel()">Chỉnh sửa</button>
     <button onclick="saveCard()">Lưu thiệp</button>
 </div>
 
-<div class="panel hide-on-export" id="panel">
+<div class="panel" id="panel">
     <input type="text" id="inputHost" placeholder="Tên chủ thiệp">
     <input type="text" id="inputGuest" placeholder="Tên người mời">
     <input type="date" id="inputDate">
@@ -181,8 +181,37 @@ button{
 
 <script>
 
+/* ===== POPUP PHÁT NHẠC KHI MỞ WEB ===== */
+window.onload=function(){
+    showMusicPopup();
+};
+
+function showMusicPopup(){
+    const overlay=document.createElement("div");
+    overlay.className="overlay";
+    overlay.innerHTML=`
+        <div class="popup">
+            <h2>🎵 Bật nhạc nền?</h2>
+            <p>Bạn có muốn phát nhạc cho thiệp không?</p>
+            <button onclick="playMusic()">Phát nhạc</button>
+            <button onclick="closePopup()">Không</button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+function playMusic(){
+    document.getElementById("bgMusic").play();
+    closePopup();
+}
+
+function closePopup(){
+    document.querySelector(".overlay").remove();
+}
+
+/* ===== CHỈNH SỬA ===== */
 function togglePanel(){
-    panel.classList.toggle("hide-on-export");
+    panel.style.display = panel.style.display==="block"?"none":"block";
 }
 
 function updateCard(){
@@ -202,9 +231,10 @@ function updateCard(){
         time.innerText=h+":"+m+" "+suffix;
     }
 
-    panel.classList.add("hide-on-export");
+    panel.style.display="none";
 }
 
+/* ===== LƯU ẢNH ===== */
 function saveCard(){
 
     controls.classList.add("hide-on-export");
@@ -229,15 +259,15 @@ function showDownloadPopup(){
     overlay.className="overlay";
     overlay.innerHTML=`
         <div class="popup">
-            <h2>✨ Ảnh đã tạo thành công!</h2>
-            <p>Vào mục <b>Tải xuống</b> của trình duyệt<br>để lưu ảnh về máy nhé 🎓</p>
-            <button onclick="closePopup()">Đã hiểu</button>
+            <h2>✨ Ảnh đã tạo!</h2>
+            <p>Vào mục <b>Tải xuống</b> của trình duyệt<br>để lưu ảnh về máy 🎓</p>
+            <button onclick="closeDownloadPopup()">Đã hiểu</button>
         </div>
     `;
     document.body.appendChild(overlay);
 }
 
-function closePopup(){
+function closeDownloadPopup(){
     document.querySelector(".overlay").remove();
     controls.classList.remove("hide-on-export");
 }
